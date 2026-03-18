@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ruta SV — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--bg:#f5f5f7;--s1:#fff;--s2:#f0f0f5;--border:#e2e2ec;--red:#e8192c;--redbg:rgba(232,25,44,.07);--redborder:rgba(232,25,44,.2);--green:#00a86b;--greenbg:rgba(0,168,107,.08);--greenborder:rgba(0,168,107,.2);--gold:#e09000;--goldbg:rgba(224,144,0,.08);--goldborder:rgba(224,144,0,.2);--text:#111118;--text2:#666680;--text3:#aaaabc;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:500px;margin:0 auto;min-height:100vh;padding-bottom:40px}
+/* LOGIN */
+#s-login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:linear-gradient(160deg,#fff5f5,#f5f5f7)}
+.lcard{width:100%;max-width:380px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:32px 28px;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.lcard-top{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.lcard-ic{width:44px;height:44px;border-radius:13px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+/* TOPBAR */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.tb-title{font-size:15px;font-weight:800;flex:1}
+/* TABS */
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:0 16px}
+.tab{flex:1;padding:12px 0;font-size:13px;font-weight:700;color:var(--text3);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-family:'Plus Jakarta Sans'}
+.tab.on{color:var(--red);border-bottom-color:var(--red)}
+/* CONTENT */
+.content{padding:16px}
+.neg-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.nc-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.nc-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.nc-info{flex:1}
+.nc-name{font-size:14px;font-weight:800;color:var(--text)}
+.nc-tipo{font-size:11px;color:var(--text3);font-weight:600;margin-top:2px}
+.nc-detail{font-size:12px;color:var(--text2);line-height:1.8;padding:10px 12px;background:var(--s2);border-radius:10px;margin-bottom:10px;border:1px solid var(--border)}
+.nc-btns{display:flex;gap:8px}
+.nc-btns button{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;transition:all .12s;touch-action:manipulation}
+.nc-btns button:active{transform:scale(.95)}
+.btn-apro{background:var(--green);color:#fff}
+.btn-rech{background:var(--redbg);border:1px solid var(--redborder);color:var(--red)}
+/* MINI MAP */
+.mini-map{height:140px;border-radius:10px;overflow:hidden;margin-bottom:10px;border:1px solid var(--border)}
+/* FIELDS */
+.field{margin-bottom:11px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.field input{width:100%;padding:11px 13px;background:var(--s2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:'Plus Jakarta Sans';font-size:13px;outline:none;transition:all .15s}
+.field input:focus{border-color:var(--red);background:#fff}
+.field input::placeholder{color:var(--text3)}
+.btn-login{width:100%;padding:14px;border:none;border-radius:12px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s;box-shadow:0 4px 16px rgba(232,25,44,.25)}
+.btn-login:active{transform:scale(.97)}
+/* KPI */
+.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.04);text-align:center}
+.kpi-v{font-size:28px;font-weight:800;color:var(--red)}
+.kpi-l{font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:4px}
+/* BADGE */
+.bdg{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:800}
+.bg{background:var(--greenbg);border:1px solid var(--greenborder);color:var(--green)}
+.bp{background:var(--goldbg);border:1px solid var(--goldborder);color:var(--gold)}
+/* TOAST */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--text);color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;max-width:90vw;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--green)}
+.toast.err{background:var(--red)}
+.load-ov{display:none;position:fixed;inset:0;z-index:5000;align-items:center;justify-content:center;background:rgba(255,255,255,.7);backdrop-filter:blur(4px)}
+.load-ov.show{display:flex}
+.load-chip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,.12)}
+.spinner{width:20px;height:20px;border:2.5px solid var(--border2);border-top-color:var(--red);border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-chip p{font-size:13px;font-weight:600;color:var(--text2)}
+.empty{text-align:center;color:var(--text3);padding:40px;font-size:13px;line-height:1.8}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="s-login">
+  <div class="lcard">
+    <div class="lcard-top">
+      <div class="lcard-ic">🛣️</div>
+      <div><div style="font-size:20px;font-weight:800">Ruta SV Admin</div><div style="font-size:12px;color:var(--text3)">Panel de administración</div></div>
+    </div>
+    <div class="field"><label>Usuario</label><input type="text" id="l-user" placeholder="admin" autocomplete="off"></div>
+    <div class="field"><label>Contraseña</label><input type="password" id="l-pass" placeholder="••••••••"></div>
+    <button class="btn-login" onclick="doLogin()">Entrar →</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="s-app" style="display:none">
+  <div class="topbar">
+    <div style="width:32px;height:32px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:16px">🛣️</div>
+    <div class="tb-title">Ruta SV Admin</div>
+    <button style="padding:7px 12px;border:1px solid var(--border);border-radius:9px;background:var(--s2);color:var(--text2);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer" onclick="doLogout()">Salir</button>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="setTab('pendientes',this)">⏳ Pendientes</button>
+    <button class="tab" onclick="setTab('activos',this)">✅ Activos</button>
+    <button class="tab" onclick="setTab('stats',this)">📊 Stats</button>
+  </div>
+  <div class="content" id="content"></div>
+</div>
+
+<div class="load-ov" id="loading"><div class="load-chip"><div class="spinner"></div><p id="ltxt">Cargando...</p></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import{getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,query,where}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",authDomain:"zuno-1285e.firebaseapp.com",projectId:"zuno-1285e",storageBucket:"zuno-1285e.firebasestorage.app",messagingSenderId:"234427184784",appId:"1:234427184784:web:1bdb29f6f2a1f4e85b4a15"});
+const db=getFirestore(app);
+const $=id=>document.getElementById(id);
+const toast=(m,tp='')=>{const t=$('toast');t.textContent=m;t.className='toast show'+(tp?' '+tp:'');setTimeout(()=>t.className='toast',3200);};
+const load=(s,t='Cargando...')=>{if(s){$('loading').classList.add('show');$('ltxt').textContent=t;}else $('loading').classList.remove('show');};
+const TIPOS={llanteria:{label:'Llantería',emoji:'🔧',color:'#e8192c'},gasolinera:{label:'Gasolinera',emoji:'⛽',color:'#f59e0b'},taller:{label:'Taller',emoji:'🔩',color:'#2563eb'},lavado:{label:'Lavado',emoji:'🚿',color:'#00a86b'}};
+let curTab='pendientes',allNegocios=[];
+const miniMaps={};
+
+window.doLogin=()=>{
+  const u=$('l-user').value.trim(),p=$('l-pass').value;
+  if((u==='admin'&&p==='admin')||(u==='rutasv'&&p==='rutasv2026')){
+    localStorage.setItem('rutasv_admin','1');
+    $('s-login').style.display='none';$('s-app').style.display='block';
+    loadAll();
+  }else toast('Credenciales incorrectas','err');
+};
+window.doLogout=()=>{localStorage.removeItem('rutasv_admin');$('s-app').style.display='none';$('s-login').style.display='flex';};
+
+async function loadAll(){
+  load(true,'Cargando negocios...');
+  try{
+    const snap=await getDocs(collection(db,'rutasv_negocios'));
+    allNegocios=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch{allNegocios=[];}
+  load(false);
+  render();
+}
+
+function render(){
+  const pend=allNegocios.filter(n=>!n.activo);
+  const act=allNegocios.filter(n=>n.activo);
+  if(curTab==='pendientes')renderList(pend,true);
+  else if(curTab==='activos')renderList(act,false);
+  else renderStats(pend,act);
+}
+
+function renderList(list,isPend){
+  $('content').innerHTML=list.length?list.map(n=>{
+    const t=TIPOS[n.tipo]||TIPOS.taller;
+    return `<div class="neg-card">
+      <div class="nc-top">
+        <div class="nc-ic" style="background:${t.color}22">${t.emoji}</div>
+        <div class="nc-info">
+          <div class="nc-name">${n.nombre}</div>
+          <div class="nc-tipo">${t.label} <span class="bdg ${n.activo?'bg':'bp'}">${n.activo?'✅ Activo':'⏳ Pendiente'}</span></div>
+        </div>
+      </div>
+      <div class="nc-detail">
+        📱 ${n.tel||'—'}<br>
+        📌 ${n.dir||'—'}<br>
+        🕐 ${n.horario||'—'}<br>
+        👤 ${n.owner||'—'} · ${n.email||'—'}<br>
+        📍 ${n.lat?.toFixed(5)||'—'}, ${n.lng?.toFixed(5)||'—'}
+      </div>
+      <div class="mini-map" id="map-${n.id}"></div>
+      <div class="nc-btns">
+        ${isPend?`<button class="btn-apro" onclick="aprobar('${n.id}')">✅ Aprobar</button>`:''}
+        <button class="btn-rech" onclick="rechazar('${n.id}')">🗑️ ${isPend?'Rechazar':'Eliminar'}</button>
+        ${!isPend?`<a href="https://www.google.com/maps?q=${n.lat},${n.lng}" target="_blank" style="flex:1;padding:10px;border-radius:10px;background:var(--bluebg);border:1px solid var(--blueborder);color:var(--blue);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center">🗺️ Ver mapa</a>`:''}
+      </div>
+    </div>`;}).join('')
+  :`<div class="empty">${isPend?'🎉 Sin negocios pendientes':'Sin negocios activos aún'}</div>`;
+  // Mini mapas
+  list.forEach(n=>{
+    if(n.lat&&n.lng&&!miniMaps[n.id]){
+      setTimeout(()=>{
+        const el=document.getElementById('map-'+n.id);
+        if(!el)return;
+        const m=L.map(el,{zoomControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false}).setView([n.lat,n.lng],15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(m);
+        const t=TIPOS[n.tipo]||TIPOS.taller;
+        L.divIcon({html:`<div style="width:30px;height:30px;border-radius:50%;background:${t.color};display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)">${t.emoji}</div>`,className:'',iconSize:[30,30],iconAnchor:[15,15]});
+        L.marker([n.lat,n.lng]).addTo(m);
+        miniMaps[n.id]=true;
+      },100);
+    }
+  });
+}
+
+function renderStats(pend,act){
+  $('content').innerHTML=`
+    <div class="kgrid">
+      <div class="kpi"><div class="kpi-v">${act.length}</div><div class="kpi-l">Activos</div></div>
+      <div class="kpi"><div class="kpi-v" style="color:var(--gold)">${pend.length}</div><div class="kpi-l">Pendientes</div></div>
+      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='llanteria').length}</div><div class="kpi-l">Llanterías</div></div>
+      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='gasolinera').length}</div><div class="kpi-l">Gasolineras</div></div>
+      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='taller').length}</div><div class="kpi-l">Talleres</div></div>
+      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='lavado').length}</div><div class="kpi-l">Lavados</div></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
+      <div style="font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">Total registros</div>
+      <div style="font-size:36px;font-weight:800;color:var(--red);text-align:center">${allNegocios.length}</div>
+      <div style="font-size:12px;color:var(--text3);text-align:center;margin-top:4px">negocios en la base de datos</div>
+    </div>`;
+}
+
+window.aprobar=async id=>{
+  load(true,'Aprobando...');
+  try{await updateDoc(doc(db,'rutasv_negocios',id),{activo:true,aprobadoAt:Date.now()});await loadAll();toast('✅ Negocio aprobado — ya aparece en el mapa','ok');}
+  catch(e){toast('Error','err');}load(false);
+};
+window.rechazar=async id=>{
+  if(!confirm('¿Eliminar este negocio?'))return;
+  load(true);try{await deleteDoc(doc(db,'rutasv_negocios',id));await loadAll();toast('Eliminado','ok');}catch{toast('Error','err');}load(false);
+};
+
+window.setTab=(t,el)=>{curTab=t;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));el.classList.add('on');render();};
+
+// AUTO LOGIN
+if(localStorage.getItem('rutasv_admin')){$('s-login').style.display='none';$('s-app').style.display='block';loadAll();}
+</script>
+</body>
+</html>

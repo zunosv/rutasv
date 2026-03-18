@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ruta SV</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+  --bg:#f5f5f7;--s1:#fff;--s2:#f0f0f5;--border:#e2e2ec;--border2:#d0d0e0;
+  --red:#e8192c;--redbg:rgba(232,25,44,.07);--redborder:rgba(232,25,44,.2);
+  --green:#00a86b;--greenbg:rgba(0,168,107,.08);--greenborder:rgba(0,168,107,.2);
+  --gold:#e09000;--goldbg:rgba(224,144,0,.08);--goldborder:rgba(224,144,0,.2);
+  --blue:#2563eb;--bluebg:rgba(37,99,235,.07);--blueborder:rgba(37,99,235,.2);
+  --text:#111118;--text2:#666680;--text3:#aaaabc;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* TOPBAR */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;z-index:1000;box-shadow:0 2px 12px rgba(0,0,0,.06);flex-shrink:0}
+.tb-brand{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tb-ic{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(232,25,44,.3);flex-shrink:0}
+.tb-name{font-size:20px;font-weight:800;color:var(--text)}
+.tb-sub{font-size:11px;color:var(--text3);font-weight:600;margin-left:2px}
+.tb-reg{margin-left:auto;padding:7px 12px;border:none;border-radius:9px;background:var(--redbg);border:1px solid var(--redborder);color:var(--red);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation}
+.tb-reg:active{transform:scale(.95)}
+
+/* CATEGORÍAS */
+.cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.cats::-webkit-scrollbar{display:none}
+.cat{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--s2);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0;touch-action:manipulation;transition:all .12s}
+.cat:active{transform:scale(.94)}
+.cat.on{background:var(--red);border-color:var(--red);color:#fff}
+.cat-ic{font-size:16px}
+
+/* MAPA */
+#map{flex:1;z-index:1}
+
+/* BUSCADOR FLOTANTE */
+.search-float{position:absolute;top:auto;bottom:180px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:1000}
+.search-bar{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:0 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.12)}
+.search-bar input{flex:1;padding:13px 0;background:transparent;border:none;color:var(--text);font-family:'Plus Jakarta Sans';font-size:14px;outline:none}
+.search-bar input::placeholder{color:var(--text3)}
+.search-ic{font-size:18px;flex-shrink:0}
+
+/* BTN MI UBICACIÓN */
+.btn-loc{position:absolute;bottom:100px;right:16px;z-index:1000;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.12);touch-action:manipulation}
+.btn-loc:active{transform:scale(.92)}
+
+/* BOTTOM NAV */
+.bnav{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:1000;box-shadow:0 -4px 20px rgba(0,0,0,.06);flex-shrink:0;display:flex}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--text3);font-size:10px;font-weight:700;padding:4px 0;transition:color .12s;touch-action:manipulation}
+.bn.on{color:var(--red)}
+.bn-ic{font-size:22px}
+.bn-bar{width:20px;height:3px;border-radius:2px;background:var(--red);opacity:0;transition:opacity .12s;margin-top:1px}
+.bn.on .bn-bar{opacity:1}
+
+/* SHEET NEGOCIO */
+.sheet{position:absolute;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:#fff;border-radius:20px 20px 0 0;z-index:2000;transition:transform .3s cubic-bezier(.34,1.1,.64,1);box-shadow:0 -8px 40px rgba(0,0,0,.15)}
+.sheet.open{transform:translateX(-50%) translateY(0)}
+.sheet-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 16px}
+.sheet-body{padding:0 18px 0}
+.sheet-footer{padding:12px 18px;padding-bottom:max(env(safe-area-inset-bottom),24px);background:#fff}
+.sh-top{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.sh-logo{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.sh-info{flex:1}
+.sh-name{font-size:17px;font-weight:800;color:var(--text)}
+.sh-tipo{font-size:12px;color:var(--text3);margin-top:3px;font-weight:600}
+.sh-dist{font-size:12px;color:var(--blue);margin-top:4px;font-weight:700}
+.sh-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sh-btn{padding:12px;border-radius:12px;border:none;font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation;transition:all .12s;text-decoration:none}
+.sh-btn:active{transform:scale(.96)}
+.sh-btn.primary{background:var(--red);color:#fff;box-shadow:0 3px 12px rgba(232,25,44,.25)}
+.sh-btn.secondary{background:var(--s2);border:1px solid var(--border);color:var(--text)}
+.sh-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--s2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2)}
+
+/* OVERLAY */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.3);z-index:1500;display:none}
+.overlay.on{display:block}
+
+/* MODAL REGISTRO */
+.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);z-index:3000;align-items:flex-end;justify-content:center}
+.mov.open{display:flex}
+.modal{background:#fff;border-radius:22px 22px 0 0;padding:20px 20px 50px;width:100%;max-width:430px;animation:mUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto}
+@keyframes mUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.m-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+.modal h3{font-size:18px;font-weight:800;margin-bottom:4px;color:var(--text)}
+.modal p{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans';font-size:13px;outline:none;transition:all .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);background:#fff}
+.field input::placeholder,.field textarea::placeholder{color:var(--text3)}
+.field select option{background:#fff}
+.btn-submit{width:100%;padding:14px;border:none;border-radius:12px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s;box-shadow:0 4px 16px rgba(232,25,44,.25);margin-top:4px}
+.btn-submit:active{transform:scale(.97)}
+.btn-cancel{width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;background:transparent;color:var(--text2);font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;transition:all .12s}
+.btn-cancel:active{transform:scale(.97)}
+
+/* TOAST */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--text);color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;max-width:90vw;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--green)}
+.toast.err{background:var(--red)}
+
+/* LOADING */
+.load-ov{display:none;position:fixed;inset:0;z-index:5000;align-items:center;justify-content:center;background:rgba(255,255,255,.7);backdrop-filter:blur(4px)}
+.load-ov.show{display:flex}
+.load-chip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,.12)}
+.spinner{width:20px;height:20px;border:2.5px solid var(--border2);border-top-color:var(--red);border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-chip p{font-size:13px;font-weight:600;color:var(--text2)}
+
+/* CUSTOM MARKERS */
+.marker-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;border:3px solid #fff;box-shadow:0 3px 12px rgba(0,0,0,.25);cursor:pointer}
+
+/* SCREEN GRUA */
+.scr{display:none;flex-direction:column;flex:1;overflow-y:auto}
+.scr.on{display:flex}
+.grua-hdr{background:#fff;border-bottom:1px solid var(--border);padding:16px 18px;display:flex;align-items:center;gap:12px}
+.back-btn{width:36px;height:36px;border-radius:10px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;touch-action:manipulation}
+.back-btn:active{transform:scale(.92)}
+.grua-content{padding:18px}
+.grua-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);cursor:pointer;touch-action:manipulation;transition:all .12s}
+.grua-card:active{transform:scale(.98)}
+.grua-ic{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.grua-info{flex:1}
+.grua-name{font-size:14px;font-weight:800;color:var(--text)}
+.grua-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.grua-tel{font-size:13px;font-weight:700;color:var(--red);margin-top:4px}
+.grua-call{padding:10px 16px;border:none;border-radius:10px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;touch-action:manipulation}
+.grua-call:active{transform:scale(.94)}
+.emergency-ban{background:var(--redbg);border:1.5px solid var(--redborder);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.eb-txt{flex:1;font-size:13px;color:var(--red);font-weight:700;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-ic">🛣️</div>
+    <div>
+      <div class="tb-name">Ruta SV</div>
+      <div class="tb-sub">Servicios para tu vehículo</div>
+    </div>
+    <button class="tb-reg" onclick="openM('m-reg')">+ Registrar negocio</button>
+  </div>
+  <div class="cats">
+    <div class="cat on" data-t="all" onclick="setcat('all',this)"><span class="cat-ic">🌟</span>Todos</div>
+    <div class="cat" data-t="llanteria" onclick="setcat('llanteria',this)"><span class="cat-ic">🔧</span>Llanterías</div>
+    <div class="cat" data-t="gasolinera" onclick="setcat('gasolinera',this)"><span class="cat-ic">⛽</span>Gasolineras</div>
+    <div class="cat" data-t="taller" onclick="setcat('taller',this)"><span class="cat-ic">🔩</span>Talleres</div>
+    <div class="cat" data-t="lavado" onclick="setcat('lavado',this)"><span class="cat-ic">🚿</span>Lavados</div>
+  </div>
+</div>
+
+<!-- MAPA / SCREENS -->
+<div style="position:relative;flex:1;display:flex;flex-direction:column">
+
+  <!-- MAPA -->
+  <div id="scr-mapa" class="scr on">
+    <div id="map"></div>
+    <div class="search-float">
+      <div class="search-bar">
+        <span class="search-ic">🔍</span>
+        <input type="text" id="search-input" placeholder="Buscar llantería, taller..." oninput="filterMarkers()">
+      </div>
+    </div>
+    <div class="btn-loc" onclick="goToMyLocation()" title="Mi ubicación">📍</div>
+  </div>
+
+  <!-- GRÚAS -->
+  <div id="scr-grua" class="scr">
+    <div class="grua-hdr">
+      <div class="back-btn" onclick="showScreen('mapa')">←</div>
+      <div>
+        <div style="font-size:16px;font-weight:800;color:var(--text)">🚛 Grúas y Asistencia</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:1px">Servicio en carretera El Salvador</div>
+      </div>
+    </div>
+    <div class="grua-content">
+      <div class="emergency-ban">
+        <span style="font-size:24px">🚨</span>
+        <div class="eb-txt">¿Emergencia en carretera?<br>Llamá directo al servicio más cercano</div>
+      </div>
+      <div id="grua-list"></div>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" onclick="closeSheet()"></div>
+
+  <!-- SHEET DETALLE NEGOCIO -->
+  <div class="sheet" id="sheet">
+    <button class="sh-close" onclick="closeSheet()">✕</button>
+    <div class="sheet-pill"></div>
+    <div class="sheet-body">
+      <div class="sh-top">
+        <div class="sh-logo" id="sh-logo">🔧</div>
+        <div class="sh-info">
+          <div class="sh-name" id="sh-name">—</div>
+          <div class="sh-tipo" id="sh-tipo">—</div>
+          <div class="sh-dist" id="sh-dist"></div>
+        </div>
+      </div>
+      <div id="sh-extra" style="margin-bottom:14px"></div>
+    </div>
+    <div class="sheet-footer">
+      <div class="sh-btns">
+        <a id="sh-tel-btn" class="sh-btn primary" href="#">📞 Llamar</a>
+        <a id="sh-maps-btn" class="sh-btn secondary" href="#" target="_blank">🗺️ Cómo llegar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <div class="bn on" id="bn-mapa" onclick="showScreen('mapa')"><div class="bn-ic">🗺️</div><span>Mapa</span><div class="bn-bar"></div></div>
+  <div class="bn" id="bn-grua" onclick="showScreen('grua')"><div class="bn-ic">🚛</div><span>Grúas</span><div class="bn-bar"></div></div>
+  <div class="bn" id="bn-reg" onclick="openM('m-reg')"><div class="bn-ic">➕</div><span>Registrar</span><div class="bn-bar"></div></div>
+</div>
+
+<!-- MODAL REGISTRO NEGOCIO -->
+<div class="mov" id="m-reg">
+  <div class="modal">
+    <div class="m-pill"></div>
+    <h3>Registrá tu negocio</h3>
+    <p>Aparece en el mapa gratis. Lo revisamos y lo publicamos en menos de 24h.</p>
+    <div class="field"><label>Nombre del negocio</label><input type="text" id="rn-nombre" placeholder="Ej: Llantería El Rápido"></div>
+    <div class="field"><label>Tipo</label>
+      <select id="rn-tipo">
+        <option value="llanteria">🔧 Llantería / Vulcanizadora</option>
+        <option value="gasolinera">⛽ Gasolinera</option>
+        <option value="taller">🔩 Taller mecánico</option>
+        <option value="lavado">🚿 Lavado de carros</option>
+      </select>
+    </div>
+    <div class="field"><label>Teléfono</label><input type="tel" id="rn-tel" placeholder="7000-0000" inputmode="tel"></div>
+    <div class="field"><label>Dirección / Referencia</label><input type="text" id="rn-dir" placeholder="Ej: Col. Escalón, frente al parque"></div>
+    <div class="field"><label>Horario</label><input type="text" id="rn-horario" placeholder="Ej: Lun-Sáb 7am-6pm"></div>
+    <div class="field"><label>¿Cómo obtenemos tu ubicación?</label>
+      <select id="rn-loc-modo">
+        <option value="gps">📍 Usar mi ubicación actual (GPS)</option>
+        <option value="manual">✏️ Ingresar coordenadas manualmente</option>
+      </select>
+    </div>
+    <div id="rn-coords-wrap" style="display:none">
+      <div class="field"><label>Latitud</label><input type="number" id="rn-lat" placeholder="13.6929" step="0.0001"></div>
+      <div class="field"><label>Longitud</label><input type="number" id="rn-lng" placeholder="-89.2182" step="0.0001"></div>
+      <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Buscá tu negocio en Google Maps, tocá el pin y copiá las coordenadas.</p>
+    </div>
+    <div class="field"><label>Nombre del propietario</label><input type="text" id="rn-owner" placeholder="Tu nombre"></div>
+    <div class="field"><label>Correo de contacto</label><input type="email" id="rn-email" placeholder="tucorreo@gmail.com"></div>
+    <button class="btn-submit" onclick="registrarNegocio()">Enviar para revisión →</button>
+    <button class="btn-cancel" onclick="closeM('m-reg')">Cancelar</button>
+  </div>
+</div>
+
+<div class="load-ov" id="loading"><div class="load-chip"><div class="spinner"></div><p id="ltxt">Cargando...</p></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,query,where}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",authDomain:"zuno-1285e.firebaseapp.com",projectId:"zuno-1285e",storageBucket:"zuno-1285e.firebasestorage.app",messagingSenderId:"234427184784",appId:"1:234427184784:web:1bdb29f6f2a1f4e85b4a15"});
+const db=getFirestore(app);
+
+const $=id=>document.getElementById(id);
+const toast=(m,tp='')=>{const t=$('toast');t.textContent=m;t.className='toast show'+(tp?' '+tp:'');setTimeout(()=>t.className='toast',3200);};
+const load=(s,t='Cargando...')=>{if(s){$('loading').classList.add('show');$('ltxt').textContent=t;}else $('loading').classList.remove('show');};
+window.openM=id=>$(id).classList.add('open');
+window.closeM=id=>$(id).classList.remove('open');
+document.querySelectorAll('.mov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')}));
+
+// TIPOS
+const TIPOS={
+  llanteria:{label:'Llantería',emoji:'🔧',color:'#e8192c'},
+  gasolinera:{label:'Gasolinera',emoji:'⛽',color:'#f59e0b'},
+  taller:{label:'Taller Mecánico',emoji:'🔩',color:'#2563eb'},
+  lavado:{label:'Lavado',emoji:'🚿',color:'#00a86b'},
+};
+
+// GRÚAS predeterminadas
+const GRUAS=[
+  {name:'Grúas El Salvador 24/7',tel:'+50322261234',sub:'Servicio nacional · 24 horas',color:'#e8192c'},
+  {name:'Asistencia Vial SV',tel:'+50378901234',sub:'San Salvador y alrededores',color:'#2563eb'},
+  {name:'Grúas Rápidas SV',tel:'+50361231234',sub:'Occidente y Oriente',color:'#059669'},
+  {name:'911 Emergencias',tel:'911',sub:'Policía Nacional Civil',color:'#7c3aed'},
+];
+
+// DEMO negocios (se reemplazan con Firebase)
+const DEMO=[
+  {id:'d1',nombre:'Llantería La Rueda',tipo:'llanteria',lat:13.6929,lng:-89.2182,tel:'7111-2222',horario:'Lun-Sáb 7am-6pm',dir:'Col. Escalón, San Salvador',activo:true},
+  {id:'d2',nombre:'Texaco Escalón',tipo:'gasolinera',lat:13.6945,lng:-89.2301,tel:'2222-3333',horario:'24 horas',dir:'Blvd. del Hipódromo',activo:true},
+  {id:'d3',nombre:'Taller Don Jorge',tipo:'taller',lat:13.6910,lng:-89.2150,tel:'7333-4444',horario:'Lun-Vie 8am-5pm',dir:'Av. Los Andes, Soyapango',activo:true},
+  {id:'d4',nombre:'Lavado Express',tipo:'lavado',lat:13.6960,lng:-89.2220,tel:'7444-5555',horario:'Lun-Dom 7am-7pm',dir:'Final Alameda Roosevelt',activo:true},
+  {id:'d5',nombre:'Vulcanizadora 24H',tipo:'llanteria',lat:13.6890,lng:-89.2100,tel:'7555-6666',horario:'24 horas',dir:'Carretera a Santa Ana km 12',activo:true},
+  {id:'d6',nombre:'Esso Centro',tipo:'gasolinera',lat:13.6980,lng:-89.2280,tel:'2211-3344',horario:'24 horas',dir:'Av. España, San Salvador',activo:true},
+];
+
+let map,allNegocios=[],allMarkers=[],curCat='all',myLatLng=null,myMarker=null;
+
+// INIT MAPA
+function initMap(){
+  map=L.map('map',{zoomControl:false}).setView([13.6929,-89.2182],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
+  L.control.zoom({position:'topright'}).addTo(map);
+  loadNegocios();
+  goToMyLocation();
+}
+
+async function loadNegocios(){
+  try{
+    const snap=await getDocs(query(collection(db,'rutasv_negocios'),where('activo','==',true)));
+    const firebase=snap.docs.map(d=>({id:d.id,...d.data()}));
+    allNegocios=[...DEMO,...firebase];
+  }catch{allNegocios=DEMO;}
+  renderMarkers();
+}
+
+function renderMarkers(){
+  allMarkers.forEach(m=>map.removeLayer(m));
+  allMarkers=[];
+  const q=($('search-input')?.value||'').toLowerCase();
+  const list=allNegocios.filter(n=>{
+    if(!n.activo)return false;
+    if(curCat!=='all'&&n.tipo!==curCat)return false;
+    if(q&&!n.nombre.toLowerCase().includes(q)&&!n.dir?.toLowerCase().includes(q))return false;
+    return true;
+  });
+  list.forEach(n=>{
+    const t=TIPOS[n.tipo]||TIPOS.taller;
+    const icon=L.divIcon({
+      html:`<div class="marker-icon" style="background:${t.color}">${t.emoji}</div>`,
+      className:'',iconSize:[38,38],iconAnchor:[19,19]
+    });
+    const m=L.marker([n.lat,n.lng],{icon}).addTo(map);
+    m.on('click',()=>openSheet(n));
+    allMarkers.push(m);
+  });
+}
+
+function openSheet(n){
+  const t=TIPOS[n.tipo]||TIPOS.taller;
+  $('sh-logo').textContent=t.emoji;
+  $('sh-logo').style.background=t.color+'22';
+  $('sh-name').textContent=n.nombre;
+  $('sh-tipo').textContent=t.label+(n.horario?' · '+n.horario:'');
+  // Distancia
+  if(myLatLng){
+    const d=getDistance(myLatLng.lat,myLatLng.lng,n.lat,n.lng);
+    $('sh-dist').textContent='📍 '+d;
+  }else $('sh-dist').textContent='';
+  // Extra info
+  $('sh-extra').innerHTML=n.dir?`<div style="font-size:12px;color:var(--text3);padding:10px 12px;background:var(--s2);border-radius:10px">📌 ${n.dir}</div>`:'';
+  // Botones
+  const telBtn=$('sh-tel-btn');
+  if(n.tel){telBtn.href='tel:'+n.tel.replace(/[^0-9+]/g,'');telBtn.style.display='';}
+  else telBtn.style.display='none';
+  $('sh-maps-btn').href=`https://www.google.com/maps?q=${n.lat},${n.lng}`;
+  $('sheet').classList.add('open');
+  $('overlay').classList.add('on');
+  map.panTo([n.lat,n.lng]);
+}
+
+window.closeSheet=()=>{$('sheet').classList.remove('open');$('overlay').classList.remove('on');};
+
+function getDistance(lat1,lng1,lat2,lng2){
+  const R=6371;const dLat=(lat2-lat1)*Math.PI/180;const dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  const km=R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  return km<1?Math.round(km*1000)+'m':km.toFixed(1)+'km';
+}
+
+window.goToMyLocation=()=>{
+  if(!navigator.geolocation){toast('GPS no disponible en este dispositivo','err');return;}
+  const btn=document.querySelector('.btn-loc');
+  if(btn)btn.textContent='⌛';
+  toast('Obteniendo ubicación...');
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      myLatLng={lat:pos.coords.latitude,lng:pos.coords.longitude};
+      if(myMarker)map.removeLayer(myMarker);
+      const myIcon=L.divIcon({
+        html:`<div style="width:18px;height:18px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 2px 8px rgba(37,99,235,.5)"></div>`,
+        className:'',iconSize:[18,18],iconAnchor:[9,9]
+      });
+      myMarker=L.marker([myLatLng.lat,myLatLng.lng],{icon:myIcon}).addTo(map);
+      map.setView([myLatLng.lat,myLatLng.lng],15);
+      if(btn)btn.textContent='📍';
+      toast('✅ Ubicación encontrada','ok');
+    },
+    err=>{
+      if(btn)btn.textContent='📍';
+      if(err.code===1)toast('Permiso de ubicación denegado — habilitalo en configuración','err');
+      else if(err.code===2)toast('GPS no disponible ahora','err');
+      else toast('No se pudo obtener ubicación','err');
+      map.setView([13.6929,-89.2182],13);
+    },
+    {enableHighAccuracy:true,timeout:12000,maximumAge:0}
+  );
+};
+
+window.setcat=(t,el)=>{curCat=t;document.querySelectorAll('.cat').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderMarkers();};
+window.filterMarkers=()=>renderMarkers();
+
+// GRÚAS
+function renderGruas(){
+  $('grua-list').innerHTML=GRUAS.map(g=>`
+    <div class="grua-card">
+      <div class="grua-ic" style="background:${g.color}22">${g.tel==='911'?'🚨':'🚛'}</div>
+      <div class="grua-info">
+        <div class="grua-name">${g.name}</div>
+        <div class="grua-sub">${g.sub}</div>
+        <div class="grua-tel">${g.tel}</div>
+      </div>
+      <a href="tel:${g.tel}" class="grua-call">Llamar</a>
+    </div>`).join('');
+}
+
+// PANTALLAS
+window.showScreen=scr=>{
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  $('scr-'+scr).classList.add('on');
+  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('on'));
+  $('bn-'+scr)?.classList.add('on');
+  if(scr==='grua')renderGruas();
+};
+
+// MODO UBICACIÓN
+$('rn-loc-modo').addEventListener('change',function(){
+  $('rn-coords-wrap').style.display=this.value==='manual'?'':'none';
+});
+
+// REGISTRO
+window.registrarNegocio=async()=>{
+  const nombre=$('rn-nombre').value.trim();
+  const tipo=$('rn-tipo').value;
+  const tel=$('rn-tel').value.trim();
+  const dir=$('rn-dir').value.trim();
+  const horario=$('rn-horario').value.trim();
+  const owner=$('rn-owner').value.trim();
+  const email=$('rn-email').value.trim();
+  const modo=$('rn-loc-modo').value;
+  if(!nombre||!tel||!dir||!owner){toast('Completá los campos requeridos','err');return;}
+  load(true,'Enviando...');
+  try{
+    let lat,lng;
+    if(modo==='gps'){
+      const pos=await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,{timeout:8000}));
+      lat=pos.coords.latitude;lng=pos.coords.longitude;
+    } else {
+      lat=parseFloat($('rn-lat').value);lng=parseFloat($('rn-lng').value);
+      if(!lat||!lng){toast('Ingresá coordenadas válidas','err');load(false);return;}
+    }
+    await addDoc(collection(db,'rutasv_negocios'),{nombre,tipo,tel,dir,horario,owner,email,lat,lng,activo:false,createdAt:Date.now()});
+    closeM('m-reg');load(false);
+    toast('✅ Enviado — revisamos en menos de 24h','ok');
+    // Limpiar
+    ['rn-nombre','rn-tel','rn-dir','rn-horario','rn-owner','rn-email','rn-lat','rn-lng'].forEach(id=>{const el=$(id);if(el)el.value='';});
+  }catch(e){toast('Error al enviar: '+e.message,'err');load(false);}
+};
+
+initMap();
+</script>
+</body>
+</html>
