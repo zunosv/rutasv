@@ -520,14 +520,7 @@ async function loadGruas(){
     }
   }catch{GRUAS=GRUAS_DEFAULT;}
 }
-const DEMO=[
-  {id:'d1',nombre:'Llantería La Rueda',tipo:'llanteria',lat:13.6929,lng:-89.2182,tel:'7111-2222',horario:'Lun-Sáb 7am-6pm',dir:'Col. Escalón, San Salvador',activo:true},
-  {id:'d2',nombre:'Texaco Escalón',tipo:'gasolinera',lat:13.6945,lng:-89.2301,tel:'2222-3333',horario:'24 horas',dir:'Blvd. del Hipódromo',activo:true},
-  {id:'d3',nombre:'Taller Don Jorge',tipo:'taller',lat:13.6910,lng:-89.2150,tel:'7333-4444',horario:'Lun-Vie 8am-5pm',dir:'Av. Los Andes, Soyapango',activo:true},
-  {id:'d4',nombre:'Lavado Express',tipo:'lavado',lat:13.6960,lng:-89.2220,tel:'7444-5555',horario:'Lun-Dom 7am-7pm',dir:'Final Alameda Roosevelt',activo:true},
-  {id:'d5',nombre:'Vulcanizadora 24H',tipo:'llanteria',lat:13.6890,lng:-89.2100,tel:'7555-6666',horario:'24 horas',dir:'Carretera a Santa Ana km 12',activo:true},
-  {id:'d6',nombre:'Esso Centro',tipo:'gasolinera',lat:13.6980,lng:-89.2280,tel:'2211-3344',horario:'24 horas',dir:'Av. España, San Salvador',activo:true},
-];
+const DEMO=[];
 
 let map,allNegocios=[],allMarkers=[],curCat='all',myLatLng=null,myMarker=null;
 
