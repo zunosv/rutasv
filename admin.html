@@ -7,59 +7,79 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{--bg:#f5f5f7;--s1:#fff;--s2:#f0f0f5;--border:#e2e2ec;--red:#e8192c;--redbg:rgba(232,25,44,.07);--redborder:rgba(232,25,44,.2);--green:#00a86b;--greenbg:rgba(0,168,107,.08);--greenborder:rgba(0,168,107,.2);--gold:#e09000;--goldbg:rgba(224,144,0,.08);--goldborder:rgba(224,144,0,.2);--text:#111118;--text2:#666680;--text3:#aaaabc;}
+:root{
+  --bg:#f5f5f7;--s1:#fff;--s2:#f0f0f5;--border:#e2e2ec;--border2:#d0d0e0;
+  --red:#e8192c;--redbg:rgba(232,25,44,.07);--redborder:rgba(232,25,44,.2);
+  --green:#00a86b;--greenbg:rgba(0,168,107,.08);--greenborder:rgba(0,168,107,.2);
+  --gold:#e09000;--goldbg:rgba(224,144,0,.08);--goldborder:rgba(224,144,0,.2);
+  --blue:#2563eb;--bluebg:rgba(37,99,235,.07);--blueborder:rgba(37,99,235,.2);
+  --text:#111118;--text2:#666680;--text3:#aaaabc;
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:500px;margin:0 auto;min-height:100vh;padding-bottom:40px}
+
 /* LOGIN */
 #s-login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:linear-gradient(160deg,#fff5f5,#f5f5f7)}
 .lcard{width:100%;max-width:380px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:32px 28px;box-shadow:0 8px 40px rgba(0,0,0,.08)}
 .lcard-top{display:flex;align-items:center;gap:12px;margin-bottom:24px}
 .lcard-ic{width:44px;height:44px;border-radius:13px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+
 /* TOPBAR */
 .topbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.05)}
 .tb-title{font-size:15px;font-weight:800;flex:1}
+
 /* TABS */
-.tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:0 16px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:0 16px;position:sticky;top:57px;z-index:99}
 .tab{flex:1;padding:12px 0;font-size:13px;font-weight:700;color:var(--text3);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-family:'Plus Jakarta Sans'}
 .tab.on{color:var(--red);border-bottom-color:var(--red)}
+
 /* CONTENT */
 .content{padding:16px}
-.neg-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.neg-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
 .nc-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .nc-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .nc-info{flex:1}
 .nc-name{font-size:14px;font-weight:800;color:var(--text)}
-.nc-tipo{font-size:11px;color:var(--text3);font-weight:600;margin-top:2px}
-.nc-detail{font-size:12px;color:var(--text2);line-height:1.8;padding:10px 12px;background:var(--s2);border-radius:10px;margin-bottom:10px;border:1px solid var(--border)}
-.nc-btns{display:flex;gap:8px}
-.nc-btns button{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;transition:all .12s;touch-action:manipulation}
-.nc-btns button:active{transform:scale(.95)}
+.nc-tipo{font-size:11px;color:var(--text3);font-weight:600;margin-top:2px;display:flex;align-items:center;gap:6px}
+.nc-detail{font-size:12px;color:var(--text2);line-height:1.9;padding:10px 12px;background:var(--s2);border-radius:10px;margin-bottom:10px;border:1px solid var(--border)}
+.nc-btns{display:flex;gap:8px;flex-wrap:wrap}
+.nc-btns button,.nc-btns a{flex:1;min-width:80px;padding:10px;border:none;border-radius:10px;font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;transition:all .12s;touch-action:manipulation;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px}
+.nc-btns button:active,.nc-btns a:active{transform:scale(.95)}
 .btn-apro{background:var(--green);color:#fff}
-.btn-rech{background:var(--redbg);border:1px solid var(--redborder);color:var(--red)}
+.btn-edit{background:var(--bluebg);border:1px solid var(--blueborder)!important;color:var(--blue)}
+.btn-rech{background:var(--redbg);border:1px solid var(--redborder)!important;color:var(--red)}
+.btn-maps{background:var(--s2);border:1px solid var(--border)!important;color:var(--text2)}
+
 /* MINI MAP */
-.mini-map{height:140px;border-radius:10px;overflow:hidden;margin-bottom:10px;border:1px solid var(--border)}
+.mini-map{height:130px;border-radius:10px;overflow:hidden;margin-bottom:10px;border:1px solid var(--border)}
+
 /* FIELDS */
 .field{margin-bottom:11px}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.field input{width:100%;padding:11px 13px;background:var(--s2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:'Plus Jakarta Sans';font-size:13px;outline:none;transition:all .15s}
-.field input:focus{border-color:var(--red);background:#fff}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;background:var(--s2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:'Plus Jakarta Sans';font-size:13px;outline:none;transition:all .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);background:#fff}
 .field input::placeholder{color:var(--text3)}
 .btn-login{width:100%;padding:14px;border:none;border-radius:12px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s;box-shadow:0 4px 16px rgba(232,25,44,.25)}
 .btn-login:active{transform:scale(.97)}
+
 /* KPI */
 .kgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .kpi{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.04);text-align:center}
 .kpi-v{font-size:28px;font-weight:800;color:var(--red)}
 .kpi-l{font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:4px}
+
 /* BADGE */
 .bdg{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:800}
 .bg{background:var(--greenbg);border:1px solid var(--greenborder);color:var(--green)}
 .bp{background:var(--goldbg);border:1px solid var(--goldborder);color:var(--gold)}
+
 /* TOAST */
 .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--text);color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;max-width:90vw;box-shadow:0 8px 32px rgba(0,0,0,.2)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.ok{background:var(--green)}
 .toast.err{background:var(--red)}
+
+/* LOADING */
 .load-ov{display:none;position:fixed;inset:0;z-index:5000;align-items:center;justify-content:center;background:rgba(255,255,255,.7);backdrop-filter:blur(4px)}
 .load-ov.show{display:flex}
 .load-chip{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,.12)}
@@ -67,6 +87,34 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-chip p{font-size:13px;font-weight:600;color:var(--text2)}
 .empty{text-align:center;color:var(--text3);padding:40px;font-size:13px;line-height:1.8}
+
+/* MAPA ADMIN */
+#admin-map-wrap{display:none;flex-direction:column;height:calc(100vh - 110px)}
+#admin-map-wrap.on{display:flex}
+#admin-map{flex:1;z-index:1}
+.map-hint{background:#fff;border-top:1px solid var(--border);padding:12px 16px;font-size:12px;color:var(--text2);font-weight:600;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0}
+.map-hint span{font-size:16px}
+
+/* POPUP PIN */
+.pin-popup{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:500px;background:#fff;border-radius:20px 20px 0 0;z-index:2000;transition:transform .3s cubic-bezier(.34,1.1,.64,1);box-shadow:0 -8px 40px rgba(0,0,0,.18);padding:0 0 8px}
+.pin-popup.on{transform:translateX(-50%) translateY(0)}
+.pin-popup-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 14px}
+.pin-popup-coords{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:0 16px 14px;font-size:12px;color:var(--text2);font-weight:600;display:flex;align-items:center;gap:8px}
+.pin-popup-btn{margin:0 16px;width:calc(100% - 32px);padding:13px;border:none;border-radius:12px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(232,25,44,.25);transition:all .12s}
+.pin-popup-btn:active{transform:scale(.97)}
+.pin-dismiss{margin:8px 16px 0;width:calc(100% - 32px);padding:11px;border:1.5px solid var(--border);border-radius:12px;background:transparent;color:var(--text2);font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;cursor:pointer}
+
+/* MODAL EDICIÓN */
+.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);z-index:3000;align-items:flex-end;justify-content:center}
+.mov.open{display:flex}
+.modal{background:#fff;border-radius:22px 22px 0 0;padding:20px 20px 40px;width:100%;max-width:500px;animation:mUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto}
+@keyframes mUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.m-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+.modal h3{font-size:18px;font-weight:800;margin-bottom:4px;color:var(--text)}
+.modal p{font-size:13px;color:var(--text2);margin-bottom:16px}
+.btn-submit{width:100%;padding:14px;border:none;border-radius:12px;background:var(--blue);color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s;box-shadow:0 4px 16px rgba(37,99,235,.25);margin-top:4px}
+.btn-submit:active{transform:scale(.97)}
+.btn-cancel{width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;background:transparent;color:var(--text2);font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;cursor:pointer;margin-top:8px}
 </style>
 </head>
 <body>
@@ -76,7 +124,10 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <div class="lcard">
     <div class="lcard-top">
       <div class="lcard-ic">🛣️</div>
-      <div><div style="font-size:20px;font-weight:800">Ruta SV Admin</div><div style="font-size:12px;color:var(--text3)">Panel de administración</div></div>
+      <div>
+        <div style="font-size:20px;font-weight:800">Ruta SV Admin</div>
+        <div style="font-size:12px;color:var(--text3)">Panel de administración</div>
+      </div>
     </div>
     <div class="field"><label>Usuario</label><input type="text" id="l-user" placeholder="admin" autocomplete="off"></div>
     <div class="field"><label>Contraseña</label><input type="password" id="l-pass" placeholder="••••••••"></div>
@@ -95,8 +146,72 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
     <button class="tab on" onclick="setTab('pendientes',this)">⏳ Pendientes</button>
     <button class="tab" onclick="setTab('activos',this)">✅ Activos</button>
     <button class="tab" onclick="setTab('stats',this)">📊 Stats</button>
+    <button class="tab" onclick="setTab('mapa',this)">🗺️ Agregar</button>
   </div>
   <div class="content" id="content"></div>
+
+  <!-- MAPA ADMIN -->
+  <div id="admin-map-wrap">
+    <div id="admin-map"></div>
+    <div class="map-hint"><span>👆</span> Mantené presionado en el mapa para fijar un negocio</div>
+  </div>
+</div>
+
+<!-- POPUP PIN -->
+<div class="pin-popup" id="pin-popup">
+  <div class="pin-popup-pill"></div>
+  <div class="pin-popup-coords"><span>📍</span><span id="pin-coords-txt">—</span></div>
+  <button class="pin-popup-btn" onclick="abrirRegistroConPin()">➕ Registrar negocio aquí</button>
+  <button class="pin-dismiss" onclick="cerrarPinPopup()">Cancelar</button>
+</div>
+
+<!-- MODAL REGISTRO ADMIN (desde pin en mapa) -->
+<div class="mov" id="m-add">
+  <div class="modal">
+    <div class="m-pill"></div>
+    <h3>➕ Agregar negocio</h3>
+    <p id="m-add-coords" style="font-size:12px;background:var(--greenbg);border:1px solid var(--greenborder);border-radius:8px;padding:8px 12px;color:var(--green);font-weight:700;margin-bottom:14px"></p>
+    <div class="field"><label>Nombre del negocio *</label><input type="text" id="add-nombre" placeholder="Ej: Llantería El Rápido"></div>
+    <div class="field"><label>Tipo *</label>
+      <select id="add-tipo">
+        <option value="llanteria">🔧 Llantería / Vulcanizadora</option>
+        <option value="gasolinera">⛽ Gasolinera</option>
+        <option value="taller">🔩 Taller mecánico</option>
+        <option value="lavado">🚿 Lavado de carros</option>
+      </select>
+    </div>
+    <div class="field"><label>Teléfono *</label><input type="tel" id="add-tel" placeholder="7000-0000"></div>
+    <div class="field"><label>Dirección / Referencia *</label><input type="text" id="add-dir" placeholder="Ej: Col. Escalón, frente al parque"></div>
+    <div class="field"><label>Horario</label><input type="text" id="add-horario" placeholder="Ej: Lun-Sáb 7am-6pm"></div>
+    <button class="btn-submit" style="background:var(--green);box-shadow:0 4px 16px rgba(0,168,107,.25)" onclick="guardarNuevoAdmin()">✅ Publicar en el mapa</button>
+    <button class="btn-cancel" onclick="closeM('m-add')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL EDICIÓN -->
+<div class="mov" id="m-edit">
+  <div class="modal">
+    <div class="m-pill"></div>
+    <h3>✏️ Editar negocio</h3>
+    <p>Modificá los datos y guardá los cambios.</p>
+    <input type="hidden" id="edit-id">
+    <div class="field"><label>Nombre</label><input type="text" id="edit-nombre" placeholder="Nombre del negocio"></div>
+    <div class="field"><label>Tipo</label>
+      <select id="edit-tipo">
+        <option value="llanteria">🔧 Llantería / Vulcanizadora</option>
+        <option value="gasolinera">⛽ Gasolinera</option>
+        <option value="taller">🔩 Taller mecánico</option>
+        <option value="lavado">🚿 Lavado de carros</option>
+      </select>
+    </div>
+    <div class="field"><label>Teléfono</label><input type="tel" id="edit-tel" placeholder="7000-0000"></div>
+    <div class="field"><label>Dirección</label><input type="text" id="edit-dir" placeholder="Dirección o referencia"></div>
+    <div class="field"><label>Horario</label><input type="text" id="edit-horario" placeholder="Ej: Lun-Sáb 7am-6pm"></div>
+    <div class="field"><label>Latitud</label><input type="number" id="edit-lat" step="0.00001"></div>
+    <div class="field"><label>Longitud</label><input type="number" id="edit-lng" step="0.00001"></div>
+    <button class="btn-submit" onclick="guardarEdicion()">💾 Guardar cambios</button>
+    <button class="btn-cancel" onclick="closeM('m-edit')">Cancelar</button>
+  </div>
 </div>
 
 <div class="load-ov" id="loading"><div class="load-chip"><div class="spinner"></div><p id="ltxt">Cargando...</p></div></div>
@@ -105,25 +220,41 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import{getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,query,where}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import{getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,addDoc}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
 const app=initializeApp({apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",authDomain:"zuno-1285e.firebaseapp.com",projectId:"zuno-1285e",storageBucket:"zuno-1285e.firebasestorage.app",messagingSenderId:"234427184784",appId:"1:234427184784:web:1bdb29f6f2a1f4e85b4a15"});
 const db=getFirestore(app);
 const $=id=>document.getElementById(id);
 const toast=(m,tp='')=>{const t=$('toast');t.textContent=m;t.className='toast show'+(tp?' '+tp:'');setTimeout(()=>t.className='toast',3200);};
 const load=(s,t='Cargando...')=>{if(s){$('loading').classList.add('show');$('ltxt').textContent=t;}else $('loading').classList.remove('show');};
-const TIPOS={llanteria:{label:'Llantería',emoji:'🔧',color:'#e8192c'},gasolinera:{label:'Gasolinera',emoji:'⛽',color:'#f59e0b'},taller:{label:'Taller',emoji:'🔩',color:'#2563eb'},lavado:{label:'Lavado',emoji:'🚿',color:'#00a86b'}};
-let curTab='pendientes',allNegocios=[];
-const miniMaps={};
+window.openM=id=>$(id).classList.add('open');
+window.closeM=id=>$(id).classList.remove('open');
+document.querySelectorAll('.mov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')}));
+
+const TIPOS={
+  llanteria:{label:'Llantería',emoji:'🔧',color:'#e8192c'},
+  gasolinera:{label:'Gasolinera',emoji:'⛽',color:'#f59e0b'},
+  taller:{label:'Taller',emoji:'🔩',color:'#2563eb'},
+  lavado:{label:'Lavado',emoji:'🚿',color:'#00a86b'}
+};
+
+let curTab='pendientes', allNegocios=[], miniMaps={};
 
 window.doLogin=()=>{
-  const u=$('l-user').value.trim(),p=$('l-pass').value;
+  const u=$('l-user').value.trim(), p=$('l-pass').value;
   if((u==='admin'&&p==='admin')||(u==='rutasv'&&p==='rutasv2026')){
     localStorage.setItem('rutasv_admin','1');
-    $('s-login').style.display='none';$('s-app').style.display='block';
+    $('s-login').style.display='none';
+    $('s-app').style.display='block';
     loadAll();
-  }else toast('Credenciales incorrectas','err');
+  } else toast('Credenciales incorrectas','err');
 };
-window.doLogout=()=>{localStorage.removeItem('rutasv_admin');$('s-app').style.display='none';$('s-login').style.display='flex';};
+
+window.doLogout=()=>{
+  localStorage.removeItem('rutasv_admin');
+  $('s-app').style.display='none';
+  $('s-login').style.display='flex';
+};
 
 async function loadAll(){
   load(true,'Cargando negocios...');
@@ -131,6 +262,7 @@ async function loadAll(){
     const snap=await getDocs(collection(db,'rutasv_negocios'));
     allNegocios=snap.docs.map(d=>({id:d.id,...d.data()}));
   }catch{allNegocios=[];}
+  miniMaps={};
   load(false);
   render();
 }
@@ -138,15 +270,16 @@ async function loadAll(){
 function render(){
   const pend=allNegocios.filter(n=>!n.activo);
   const act=allNegocios.filter(n=>n.activo);
-  if(curTab==='pendientes')renderList(pend,true);
-  else if(curTab==='activos')renderList(act,false);
+  if(curTab==='pendientes') renderList(pend,true);
+  else if(curTab==='activos') renderList(act,false);
   else renderStats(pend,act);
 }
 
 function renderList(list,isPend){
-  $('content').innerHTML=list.length?list.map(n=>{
+  $('content').innerHTML=list.length ? list.map(n=>{
     const t=TIPOS[n.tipo]||TIPOS.taller;
-    return `<div class="neg-card">
+    const fecha=n.createdAt ? new Date(n.createdAt).toLocaleDateString('es-SV',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    return `<div class="neg-card" id="card-${n.id}">
       <div class="nc-top">
         <div class="nc-ic" style="background:${t.color}22">${t.emoji}</div>
         <div class="nc-info">
@@ -155,68 +288,216 @@ function renderList(list,isPend){
         </div>
       </div>
       <div class="nc-detail">
-        📱 ${n.tel||'—'}<br>
+        📱 <b>${n.tel||'—'}</b><br>
         📌 ${n.dir||'—'}<br>
         🕐 ${n.horario||'—'}<br>
-        👤 ${n.owner||'—'} · ${n.email||'—'}<br>
-        📍 ${n.lat?.toFixed(5)||'—'}, ${n.lng?.toFixed(5)||'—'}
+        👤 ${n.owner||'—'} &nbsp;·&nbsp; ✉️ ${n.email||'—'}<br>
+        📍 ${n.lat?.toFixed(5)||'—'}, ${n.lng?.toFixed(5)||'—'}<br>
+        📅 Registrado: ${fecha}
       </div>
       <div class="mini-map" id="map-${n.id}"></div>
       <div class="nc-btns">
         ${isPend?`<button class="btn-apro" onclick="aprobar('${n.id}')">✅ Aprobar</button>`:''}
-        <button class="btn-rech" onclick="rechazar('${n.id}')">🗑️ ${isPend?'Rechazar':'Eliminar'}</button>
-        ${!isPend?`<a href="https://www.google.com/maps?q=${n.lat},${n.lng}" target="_blank" style="flex:1;padding:10px;border-radius:10px;background:var(--bluebg);border:1px solid var(--blueborder);color:var(--blue);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center">🗺️ Ver mapa</a>`:''}
+        <button class="btn-edit" onclick="abrirEdicion('${n.id}')">✏️ Editar</button>
+        <button class="btn-rech" onclick="rechazar('${n.id}','${isPend}')">🗑️ ${isPend?'Rechazar':'Eliminar'}</button>
+        <a class="btn-maps" href="https://www.google.com/maps?q=${n.lat},${n.lng}" target="_blank">🗺️ Mapa</a>
       </div>
-    </div>`;}).join('')
-  :`<div class="empty">${isPend?'🎉 Sin negocios pendientes':'Sin negocios activos aún'}</div>`;
+    </div>`;
+  }).join('')
+  : `<div class="empty">${isPend?'🎉 Sin negocios pendientes<br>Todo al día!':'😶 Sin negocios activos aún'}</div>`;
+
   // Mini mapas
   list.forEach(n=>{
     if(n.lat&&n.lng&&!miniMaps[n.id]){
       setTimeout(()=>{
         const el=document.getElementById('map-'+n.id);
         if(!el)return;
+        const t=TIPOS[n.tipo]||TIPOS.taller;
         const m=L.map(el,{zoomControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false}).setView([n.lat,n.lng],15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(m);
-        const t=TIPOS[n.tipo]||TIPOS.taller;
-        L.divIcon({html:`<div style="width:30px;height:30px;border-radius:50%;background:${t.color};display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)">${t.emoji}</div>`,className:'',iconSize:[30,30],iconAnchor:[15,15]});
-        L.marker([n.lat,n.lng]).addTo(m);
+        const icon=L.divIcon({html:`<div style="width:30px;height:30px;border-radius:50%;background:${t.color};display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)">${t.emoji}</div>`,className:'',iconSize:[30,30],iconAnchor:[15,15]});
+        L.marker([n.lat,n.lng],{icon}).addTo(m);
         miniMaps[n.id]=true;
-      },100);
+      },120);
     }
   });
 }
 
 function renderStats(pend,act){
+  const total=allNegocios.length;
+  const porTipo=tipo=>allNegocios.filter(n=>n.tipo===tipo).length;
   $('content').innerHTML=`
     <div class="kgrid">
-      <div class="kpi"><div class="kpi-v">${act.length}</div><div class="kpi-l">Activos</div></div>
-      <div class="kpi"><div class="kpi-v" style="color:var(--gold)">${pend.length}</div><div class="kpi-l">Pendientes</div></div>
-      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='llanteria').length}</div><div class="kpi-l">Llanterías</div></div>
-      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='gasolinera').length}</div><div class="kpi-l">Gasolineras</div></div>
-      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='taller').length}</div><div class="kpi-l">Talleres</div></div>
-      <div class="kpi"><div class="kpi-v">${allNegocios.filter(n=>n.tipo==='lavado').length}</div><div class="kpi-l">Lavados</div></div>
+      <div class="kpi"><div class="kpi-v" style="color:var(--green)">${act.length}</div><div class="kpi-l">✅ Activos</div></div>
+      <div class="kpi"><div class="kpi-v" style="color:var(--gold)">${pend.length}</div><div class="kpi-l">⏳ Pendientes</div></div>
+      <div class="kpi"><div class="kpi-v">${porTipo('llanteria')}</div><div class="kpi-l">🔧 Llanterías</div></div>
+      <div class="kpi"><div class="kpi-v">${porTipo('gasolinera')}</div><div class="kpi-l">⛽ Gasolineras</div></div>
+      <div class="kpi"><div class="kpi-v">${porTipo('taller')}</div><div class="kpi-l">🔩 Talleres</div></div>
+      <div class="kpi"><div class="kpi-v">${porTipo('lavado')}</div><div class="kpi-l">🚿 Lavados</div></div>
     </div>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
-      <div style="font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">Total registros</div>
-      <div style="font-size:36px;font-weight:800;color:var(--red);text-align:center">${allNegocios.length}</div>
-      <div style="font-size:12px;color:var(--text3);text-align:center;margin-top:4px">negocios en la base de datos</div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.04);text-align:center">
+      <div style="font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Total en base de datos</div>
+      <div style="font-size:44px;font-weight:800;color:var(--red)">${total}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px">negocios registrados</div>
     </div>`;
 }
 
+// APROBAR
 window.aprobar=async id=>{
   load(true,'Aprobando...');
-  try{await updateDoc(doc(db,'rutasv_negocios',id),{activo:true,aprobadoAt:Date.now()});await loadAll();toast('✅ Negocio aprobado — ya aparece en el mapa','ok');}
-  catch(e){toast('Error','err');}load(false);
-};
-window.rechazar=async id=>{
-  if(!confirm('¿Eliminar este negocio?'))return;
-  load(true);try{await deleteDoc(doc(db,'rutasv_negocios',id));await loadAll();toast('Eliminado','ok');}catch{toast('Error','err');}load(false);
+  try{
+    await updateDoc(doc(db,'rutasv_negocios',id),{activo:true,aprobadoAt:Date.now()});
+    await loadAll();
+    toast('✅ Negocio aprobado — ya aparece en el mapa','ok');
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
 };
 
-window.setTab=(t,el)=>{curTab=t;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));el.classList.add('on');render();};
+// ELIMINAR / RECHAZAR
+window.rechazar=async(id,isPend)=>{
+  const msg=isPend==='true'?'¿Rechazar y eliminar este negocio pendiente?':'¿Eliminar este negocio activo del mapa?';
+  if(!confirm(msg))return;
+  load(true,'Eliminando...');
+  try{
+    await deleteDoc(doc(db,'rutasv_negocios',id));
+    await loadAll();
+    toast('🗑️ Eliminado correctamente','ok');
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
+};
+
+// EDITAR
+window.abrirEdicion=id=>{
+  const n=allNegocios.find(x=>x.id===id);
+  if(!n)return;
+  $('edit-id').value=id;
+  $('edit-nombre').value=n.nombre||'';
+  $('edit-tipo').value=n.tipo||'taller';
+  $('edit-tel').value=n.tel||'';
+  $('edit-dir').value=n.dir||'';
+  $('edit-horario').value=n.horario||'';
+  $('edit-lat').value=n.lat||'';
+  $('edit-lng').value=n.lng||'';
+  openM('m-edit');
+};
+
+window.guardarEdicion=async()=>{
+  const id=$('edit-id').value;
+  const data={
+    nombre:$('edit-nombre').value.trim(),
+    tipo:$('edit-tipo').value,
+    tel:$('edit-tel').value.trim(),
+    dir:$('edit-dir').value.trim(),
+    horario:$('edit-horario').value.trim(),
+    lat:parseFloat($('edit-lat').value),
+    lng:parseFloat($('edit-lng').value),
+    updatedAt:Date.now()
+  };
+  if(!data.nombre||!data.tel||!data.dir){toast('Completá los campos requeridos','err');return;}
+  if(isNaN(data.lat)||isNaN(data.lng)){toast('Coordenadas inválidas','err');return;}
+  load(true,'Guardando...');
+  try{
+    await updateDoc(doc(db,'rutasv_negocios',id),data);
+    closeM('m-edit');
+    await loadAll();
+    toast('✅ Cambios guardados','ok');
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
+};
+
+window.setTab=(t,el)=>{
+  curTab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  $('content').style.display = t==='mapa' ? 'none' : '';
+  const mapWrap=$('admin-map-wrap');
+  if(t==='mapa'){
+    mapWrap.classList.add('on');
+    initAdminMap();
+  } else {
+    mapWrap.classList.remove('on');
+    cerrarPinPopup();
+    render();
+  }
+};
+
+// MAPA ADMIN
+let adminMap=null, pinMarker=null, pinLatLng=null;
+
+function initAdminMap(){
+  if(adminMap) return; // ya inicializado
+  adminMap=L.map('admin-map',{zoomControl:true}).setView([13.6929,-89.2182],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(adminMap);
+
+  adminMap.on('contextmenu', e=>colocarPin(e.latlng)); // long press en móvil dispara contextmenu
+
+  // Long press manual para móvil táctil
+  let pressTimer=null;
+  adminMap.on('mousedown touchstart', e=>{
+    const latlng=e.latlng || (e.touches&&e.touches[0] ? adminMap.containerPointToLatLng(L.point(e.touches[0].clientX - adminMap.getContainer().getBoundingClientRect().left, e.touches[0].clientY - adminMap.getContainer().getBoundingClientRect().top)) : null);
+    if(!latlng) return;
+    pressTimer=setTimeout(()=>{ colocarPin(latlng); }, 600);
+  });
+  adminMap.on('mouseup touchend touchmove', ()=>{ clearTimeout(pressTimer); pressTimer=null; });
+
+  function colocarPin(latlng){
+    pinLatLng={lat:latlng.lat, lng:latlng.lng};
+    if(pinMarker) adminMap.removeLayer(pinMarker);
+    const pinIcon=L.divIcon({
+      html:`<div style="width:36px;height:36px;border-radius:50% 50% 50% 0;background:var(--red);transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 4px 16px rgba(232,25,44,.5)"></div>`,
+      className:'',iconSize:[36,36],iconAnchor:[18,36]
+    });
+    pinMarker=L.marker([pinLatLng.lat,pinLatLng.lng],{icon:pinIcon}).addTo(adminMap);
+    adminMap.panTo([pinLatLng.lat,pinLatLng.lng]);
+    $('pin-coords-txt').textContent=`${pinLatLng.lat.toFixed(5)}, ${pinLatLng.lng.toFixed(5)}`;
+    $('pin-popup').classList.add('on');
+  }
+}
+
+window.cerrarPinPopup=()=>{
+  $('pin-popup').classList.remove('on');
+  if(pinMarker&&adminMap){adminMap.removeLayer(pinMarker);pinMarker=null;}
+  pinLatLng=null;
+};
+
+window.abrirRegistroConPin=()=>{
+  if(!pinLatLng) return;
+  $('pin-popup').classList.remove('on');
+  $('m-add-coords').textContent=`📍 ${pinLatLng.lat.toFixed(5)}, ${pinLatLng.lng.toFixed(5)}`;
+  ['add-nombre','add-tel','add-dir','add-horario'].forEach(id=>{$(id).value='';});
+  openM('m-add');
+};
+
+window.guardarNuevoAdmin=async()=>{
+  if(!pinLatLng){toast('No hay punto seleccionado','err');return;}
+  const nombre=$('add-nombre').value.trim();
+  const tipo=$('add-tipo').value;
+  const tel=$('add-tel').value.trim();
+  const dir=$('add-dir').value.trim();
+  const horario=$('add-horario').value.trim();
+  if(!nombre||!tel||!dir){toast('Completá los campos requeridos','err');return;}
+  load(true,'Publicando...');
+  try{
+    await addDoc(collection(db,'rutasv_negocios'),{
+      nombre,tipo,tel,dir,horario,
+      lat:pinLatLng.lat, lng:pinLatLng.lng,
+      activo:true, owner:'Admin', email:'',
+      createdAt:Date.now(), aprobadoAt:Date.now()
+    });
+    closeM('m-add');
+    cerrarPinPopup();
+    await loadAll();
+    toast('✅ Negocio publicado en el mapa','ok');
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
+};
 
 // AUTO LOGIN
-if(localStorage.getItem('rutasv_admin')){$('s-login').style.display='none';$('s-app').style.display='block';loadAll();}
+if(localStorage.getItem('rutasv_admin')){
+  $('s-login').style.display='none';
+  $('s-app').style.display='block';
+  loadAll();
+}
 </script>
 </body>
 </html>

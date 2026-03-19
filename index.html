@@ -14,69 +14,18 @@
   --gold:#e09000;--goldbg:rgba(224,144,0,.08);--goldborder:rgba(224,144,0,.2);
   --blue:#2563eb;--bluebg:rgba(37,99,235,.07);--blueborder:rgba(37,99,235,.2);
   --text:#111118;--text2:#666680;--text3:#aaaabc;
-  --topbar-bg:#fff;--modal-bg:#fff;--sheet-bg:#fff;
-}
-/* TEMA OSCURO */
-[data-theme="dark"]{
-  --bg:#09090f;--s1:#111118;--s2:#17171f;--border:#1e1e2e;--border2:#2a2a3e;
-  --text:#f0f0fa;--text2:#8080a0;--text3:#40405a;
-  --topbar-bg:#111118;--modal-bg:#111118;--sheet-bg:#111118;
-  --redbg:rgba(232,25,44,.12);--greenbg:rgba(0,168,107,.12);
-  --goldbg:rgba(224,144,0,.12);--bluebg:rgba(37,99,235,.12);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
 /* TOPBAR */
-.topbar{background:var(--topbar-bg);border-bottom:1px solid var(--border);padding:12px 16px;z-index:1000;box-shadow:0 2px 12px rgba(0,0,0,.06);flex-shrink:0}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;z-index:1000;box-shadow:0 2px 12px rgba(0,0,0,.06);flex-shrink:0}
 .tb-brand{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .tb-ic{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(232,25,44,.3);flex-shrink:0}
 .tb-name{font-size:20px;font-weight:800;color:var(--text)}
 .tb-sub{font-size:11px;color:var(--text3);font-weight:600;margin-left:2px}
-.tb-reg{margin-left:auto;padding:7px 12px;border:1px solid var(--redborder);border-radius:9px;background:var(--redbg);color:var(--red);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation}
+.tb-reg{margin-left:auto;padding:7px 12px;border:none;border-radius:9px;background:var(--redbg);border:1px solid var(--redborder);color:var(--red);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation}
 .tb-reg:active{transform:scale(.95)}
-/* BTN HAMBURGUESA */
-.ham{width:36px;height:36px;border-radius:10px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;touch-action:manipulation;margin-right:4px}
-.ham:active{transform:scale(.92)}
-.ham span{display:block;width:16px;height:2px;background:var(--text);border-radius:1px;position:relative}
-.ham span::before,.ham span::after{content:'';position:absolute;left:0;width:16px;height:2px;background:var(--text);border-radius:1px}
-.ham span::before{top:-5px}.ham span::after{top:5px}
-
-/* SIDEBAR */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:280px;background:var(--s1);border-right:1px solid var(--border);z-index:4000;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:4px 0 24px rgba(0,0,0,.12)}
-.sidebar.open{transform:translateX(0)}
-.sb-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:3999;display:none;opacity:0;transition:opacity .25s}
-.sb-ov.open{display:block;opacity:1}
-.sb-hdr{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
-.sb-hdr-ic{width:40px;height:40px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.sb-hdr-name{font-size:20px;font-weight:800;color:var(--text)}
-.sb-hdr-sub{font-size:11px;color:var(--text3);font-weight:600}
-.sb-section{padding:12px 12px 4px}
-.sb-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:0 8px;margin-bottom:4px}
-.sb-item{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:12px;cursor:pointer;transition:all .15s;color:var(--text2);font-size:14px;font-weight:600;touch-action:manipulation}
-.sb-item:active{transform:scale(.97)}
-.sb-item:hover,.sb-item.on{background:var(--redbg);color:var(--red)}
-.sb-item-ic{font-size:20px;width:26px;text-align:center;flex-shrink:0}
-
-/* TEMA SELECTOR */
-.tema-opts{display:flex;gap:6px;padding:12px 18px}
-.tema-opt{flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;text-align:center;transition:all .15s;touch-action:manipulation}
-.tema-opt:active{transform:scale(.95)}
-.tema-opt.on{border-color:var(--red);background:var(--redbg)}
-.tema-opt-ic{font-size:20px;display:block;margin-bottom:4px}
-.tema-opt-lbl{font-size:10px;font-weight:700;color:var(--text2)}
-.tema-opt.on .tema-opt-lbl{color:var(--red)}
-
-/* GRÚAS EN SIDEBAR */
-.sb-grua{margin:0 12px 8px;background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;touch-action:manipulation;transition:all .12s;text-decoration:none}
-.sb-grua:active{transform:scale(.97)}
-.sb-grua-ic{font-size:22px;flex-shrink:0}
-.sb-grua-info{flex:1}
-.sb-grua-name{font-size:13px;font-weight:700;color:var(--text)}
-.sb-grua-tel{font-size:12px;color:var(--red);font-weight:700;margin-top:2px}
-
-.sb-footer{margin-top:auto;padding:16px 12px;border-top:1px solid var(--border)}
-.sb-ver{font-size:11px;color:var(--text3);text-align:center;font-weight:600}
 
 /* CATEGORÍAS */
 .cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
@@ -90,18 +39,18 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 #map{flex:1;z-index:1}
 
 /* BUSCADOR FLOTANTE */
-.search-float{position:absolute;top:auto;bottom:180px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:1000}
+.search-float{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:1000}
 .search-bar{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:0 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.12)}
 .search-bar input{flex:1;padding:13px 0;background:transparent;border:none;color:var(--text);font-family:'Plus Jakarta Sans';font-size:14px;outline:none}
 .search-bar input::placeholder{color:var(--text3)}
 .search-ic{font-size:18px;flex-shrink:0}
 
 /* BTN MI UBICACIÓN */
-.btn-loc{position:absolute;bottom:100px;right:16px;z-index:1000;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.12);touch-action:manipulation}
+.btn-loc{position:absolute;bottom:16px;right:16px;z-index:1000;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.12);touch-action:manipulation}
 .btn-loc:active{transform:scale(.92)}
 
 /* BOTTOM NAV */
-.bnav{background:var(--topbar-bg);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:1000;box-shadow:0 -4px 20px rgba(0,0,0,.06);flex-shrink:0;display:flex}
+.bnav{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:1000;box-shadow:0 -4px 20px rgba(0,0,0,.06);flex-shrink:0;display:flex}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--text3);font-size:10px;font-weight:700;padding:4px 0;transition:color .12s;touch-action:manipulation}
 .bn.on{color:var(--red)}
 .bn-ic{font-size:22px}
@@ -109,11 +58,11 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .bn.on .bn-bar{opacity:1}
 
 /* SHEET NEGOCIO */
-.sheet{position:absolute;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:var(--sheet-bg);border-radius:20px 20px 0 0;z-index:2000;transition:transform .3s cubic-bezier(.34,1.1,.64,1);box-shadow:0 -8px 40px rgba(0,0,0,.15)}
+.sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:#fff;border-radius:20px 20px 0 0;z-index:2000;transition:transform .3s cubic-bezier(.34,1.1,.64,1);box-shadow:0 -8px 40px rgba(0,0,0,.15);display:flex;flex-direction:column}
 .sheet.open{transform:translateX(-50%) translateY(0)}
-.sheet-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 16px}
-.sheet-body{padding:0 18px 0}
-.sheet-footer{padding:12px 18px;padding-bottom:max(env(safe-area-inset-bottom),24px);background:var(--sheet-bg)}
+.sheet-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 16px;flex-shrink:0}
+.sheet-body{padding:0 18px 0;flex:1}
+.sheet-footer{padding:12px 18px;padding-bottom:max(env(safe-area-inset-bottom),20px);background:#fff;flex-shrink:0;border-top:1px solid var(--border)}
 .sh-top{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
 .sh-logo{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
 .sh-info{flex:1}
@@ -128,13 +77,13 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .sh-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--s2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2)}
 
 /* OVERLAY */
-.overlay{position:absolute;inset:0;background:rgba(0,0,0,.3);z-index:1500;display:none}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:1500;display:none}
 .overlay.on{display:block}
 
 /* MODAL REGISTRO */
 .mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);z-index:3000;align-items:flex-end;justify-content:center}
 .mov.open{display:flex}
-.modal{background:var(--modal-bg);border-radius:22px 22px 0 0;padding:20px 20px 50px;width:100%;max-width:430px;animation:mUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto}
+.modal{background:#fff;border-radius:22px 22px 0 0;padding:20px 20px 50px;width:100%;max-width:430px;animation:mUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto}
 @keyframes mUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .m-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
 .modal h3{font-size:18px;font-weight:800;margin-bottom:4px;color:var(--text)}
@@ -185,64 +134,57 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .grua-call:active{transform:scale(.94)}
 .emergency-ban{background:var(--redbg);border:1.5px solid var(--redborder);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
 .eb-txt{flex:1;font-size:13px;color:var(--red);font-weight:700;line-height:1.5}
+
+/* HAMBURGER BTN */
+.tb-hamburger{width:36px;height:36px;border-radius:10px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;touch-action:manipulation;transition:all .12s}
+.tb-hamburger:active{transform:scale(.92)}
+.tb-hamburger svg{width:18px;height:18px;stroke:var(--text);stroke-width:2;fill:none;stroke-linecap:round}
+
+/* DRAWER */
+.drawer-ov{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:2500;display:none;backdrop-filter:blur(2px)}
+.drawer-ov.on{display:block}
+.drawer{position:fixed;top:0;left:0;height:100%;width:260px;background:#fff;z-index:2600;transform:translateX(-100%);transition:transform .28s cubic-bezier(.34,1.05,.64,1);box-shadow:8px 0 40px rgba(0,0,0,.15);display:flex;flex-direction:column}
+.drawer.on{transform:translateX(0)}
+.drawer-head{padding:20px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.drawer-title{font-size:16px;font-weight:800;color:var(--text)}
+.drawer-close{width:32px;height:32px;border-radius:50%;background:var(--s2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2);flex-shrink:0}
+.drawer-body{padding:12px 10px;flex:1;overflow-y:auto}
+.drawer-item{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:12px;cursor:pointer;transition:background .12s;touch-action:manipulation}
+.drawer-item:active{transform:scale(.97)}
+.drawer-item:hover{background:var(--s2)}
+.drawer-item-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.drawer-item-info{flex:1}
+.drawer-item-name{font-size:14px;font-weight:700;color:var(--text)}
+.drawer-item-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.drawer-item-arrow{font-size:14px;color:var(--text3)}
+
+/* GRÚAS PANEL (dropdown dentro del drawer) */
+.grua-panel{display:none;margin-top:2px}
+.grua-panel.on{display:block}
+.grua-panel-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px;margin:4px 0;display:flex;align-items:center;gap:10px;cursor:pointer;touch-action:manipulation;transition:all .12s}
+.grua-panel-card:active{transform:scale(.97)}
+.gpc-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.gpc-info{flex:1;min-width:0}
+.gpc-name{font-size:12px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gpc-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.gpc-tel{font-size:11px;font-weight:700;color:var(--red);margin-top:2px}
+.gpc-call{padding:7px 10px;border:none;border-radius:8px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;touch-action:manipulation;text-decoration:none}
+.gpc-call:active{transform:scale(.93)}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR OVERLAY -->
-<div class="sb-ov" id="sb-ov" onclick="closeSidebar()"></div>
-
-<!-- SIDEBAR -->
-<nav class="sidebar" id="sidebar">
-  <div class="sb-hdr">
-    <div class="sb-hdr-ic">🛣️</div>
-    <div><div class="sb-hdr-name">Ruta SV</div><div class="sb-hdr-sub">Servicios para tu vehículo</div></div>
-  </div>
-
-  <div class="sb-section">
-    <div class="sb-lbl">Navegación</div>
-    <div class="sb-item on" onclick="closeSidebar();showScreen('mapa')"><span class="sb-item-ic">🗺️</span>Mapa</div>
-    <div class="sb-item" onclick="closeSidebar();openM('m-reg')"><span class="sb-item-ic">➕</span>Registrar negocio</div>
-  </div>
-
-  <div class="sb-section">
-    <div class="sb-lbl">🚛 Grúas y Emergencias</div>
-  </div>
-  <div id="sb-gruas"></div>
-
-  <div class="sb-section">
-    <div class="sb-lbl">Apariencia</div>
-    <div class="tema-opts">
-      <div class="tema-opt on" id="tema-claro" onclick="setTema('light')">
-        <span class="tema-opt-ic">☀️</span>
-        <span class="tema-opt-lbl">Claro</span>
-      </div>
-      <div class="tema-opt" id="tema-oscuro" onclick="setTema('dark')">
-        <span class="tema-opt-ic">🌙</span>
-        <span class="tema-opt-lbl">Oscuro</span>
-      </div>
-      <div class="tema-opt" id="tema-sistema" onclick="setTema('system')">
-        <span class="tema-opt-ic">📱</span>
-        <span class="tema-opt-lbl">Sistema</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="sb-footer">
-    <div class="sb-ver">Ruta SV v1.0 · El Salvador 🇸🇻</div>
-  </div>
-</nav>
-
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-brand">
-    <div class="ham" onclick="toggleSidebar()"><span></span></div>
+    <div class="tb-hamburger" onclick="openDrawer()" title="Menú">
+      <svg viewBox="0 0 18 14"><line x1="0" y1="2" x2="18" y2="2"/><line x1="0" y1="7" x2="18" y2="7"/><line x1="0" y1="12" x2="18" y2="12"/></svg>
+    </div>
     <div class="tb-ic">🛣️</div>
     <div>
       <div class="tb-name">Ruta SV</div>
       <div class="tb-sub">Servicios para tu vehículo</div>
     </div>
-    <button class="tb-reg" onclick="openM('m-reg')">+ Registrar</button>
   </div>
   <div class="cats">
     <div class="cat on" data-t="all" onclick="setcat('all',this)"><span class="cat-ic">🌟</span>Todos</div>
@@ -289,26 +231,27 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <!-- OVERLAY -->
   <div class="overlay" id="overlay" onclick="closeSheet()"></div>
 
-  <!-- SHEET DETALLE NEGOCIO -->
-  <div class="sheet" id="sheet">
-    <button class="sh-close" onclick="closeSheet()">✕</button>
-    <div class="sheet-pill"></div>
-    <div class="sheet-body">
-      <div class="sh-top">
-        <div class="sh-logo" id="sh-logo">🔧</div>
-        <div class="sh-info">
-          <div class="sh-name" id="sh-name">—</div>
-          <div class="sh-tipo" id="sh-tipo">—</div>
-          <div class="sh-dist" id="sh-dist"></div>
-        </div>
+</div>
+
+<!-- SHEET DETALLE NEGOCIO (fuera del contenedor, fixed) -->
+<div class="sheet" id="sheet">
+  <button class="sh-close" onclick="closeSheet()">✕</button>
+  <div class="sheet-pill"></div>
+  <div class="sheet-body">
+    <div class="sh-top">
+      <div class="sh-logo" id="sh-logo">🔧</div>
+      <div class="sh-info">
+        <div class="sh-name" id="sh-name">—</div>
+        <div class="sh-tipo" id="sh-tipo">—</div>
+        <div class="sh-dist" id="sh-dist"></div>
       </div>
-      <div id="sh-extra" style="margin-bottom:14px"></div>
     </div>
-    <div class="sheet-footer">
-      <div class="sh-btns">
-        <a id="sh-tel-btn" class="sh-btn primary" href="#">📞 Llamar</a>
-        <a id="sh-maps-btn" class="sh-btn secondary" href="#" target="_blank">🗺️ Cómo llegar</a>
-      </div>
+    <div id="sh-extra" style="margin-bottom:14px"></div>
+  </div>
+  <div class="sheet-footer">
+    <div class="sh-btns">
+      <a id="sh-tel-btn" class="sh-btn primary" href="#">📞 Llamar</a>
+      <a id="sh-maps-btn" class="sh-btn secondary" href="#" target="_blank">🗺️ Cómo llegar</a>
     </div>
   </div>
 </div>
@@ -316,8 +259,6 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 <!-- BOTTOM NAV -->
 <div class="bnav">
   <div class="bn on" id="bn-mapa" onclick="showScreen('mapa')"><div class="bn-ic">🗺️</div><span>Mapa</span><div class="bn-bar"></div></div>
-  <div class="bn" id="bn-grua" onclick="showScreen('grua')"><div class="bn-ic">🚛</div><span>Grúas</span><div class="bn-bar"></div></div>
-  <div class="bn" id="bn-reg" onclick="openM('m-reg')"><div class="bn-ic">➕</div><span>Registrar</span><div class="bn-bar"></div></div>
 </div>
 
 <!-- MODAL REGISTRO NEGOCIO -->
@@ -359,6 +300,42 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 <div class="load-ov" id="loading"><div class="load-chip"><div class="spinner"></div><p id="ltxt">Cargando...</p></div></div>
 <div class="toast" id="toast"></div>
 
+<!-- DRAWER OVERLAY -->
+<div class="drawer-ov" id="drawer-ov" onclick="closeDrawer()"></div>
+
+<!-- DRAWER MENÚ -->
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-title">Menú</div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <!-- ITEM GRÚAS -->
+    <div class="drawer-item" onclick="toggleGruaPanel()">
+      <div class="drawer-item-ic" style="background:var(--redbg)">🚛</div>
+      <div class="drawer-item-info">
+        <div class="drawer-item-name">Grúas y Asistencia</div>
+        <div class="drawer-item-sub">Servicio en carretera 24/7</div>
+      </div>
+      <span class="drawer-item-arrow" id="grua-arrow">›</span>
+    </div>
+    <!-- PANEL GRÚAS DESPLEGABLE -->
+    <div class="grua-panel" id="grua-panel-drawer"></div>
+
+    <div style="height:1px;background:var(--border);margin:8px 0"></div>
+
+    <!-- ITEM REGISTRAR NEGOCIO -->
+    <div class="drawer-item" onclick="closeDrawer();openM('m-reg')">
+      <div class="drawer-item-ic" style="background:var(--greenbg)">➕</div>
+      <div class="drawer-item-info">
+        <div class="drawer-item-name">Registrar negocio</div>
+        <div class="drawer-item-sub">Aparece en el mapa gratis</div>
+      </div>
+      <span class="drawer-item-arrow">›</span>
+    </div>
+  </div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
@@ -373,59 +350,7 @@ window.openM=id=>$(id).classList.add('open');
 window.closeM=id=>$(id).classList.remove('open');
 document.querySelectorAll('.mov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')}));
 
-// SIDEBAR
-window.toggleSidebar=()=>{
-  $('sidebar').classList.toggle('open');
-  $('sb-ov').classList.toggle('open');
-  renderSbGruas();
-};
-window.closeSidebar=()=>{
-  $('sidebar').classList.remove('open');
-  $('sb-ov').classList.remove('open');
-};
-
-// GRÚAS EN SIDEBAR
-function renderSbGruas(){
-  $('sb-gruas').innerHTML=GRUAS.map(g=>`
-    <a class="sb-grua" href="tel:${g.tel}">
-      <span class="sb-grua-ic">${g.tel==='911'?'🚨':'🚛'}</span>
-      <div class="sb-grua-info">
-        <div class="sb-grua-name">${g.name}</div>
-        <div class="sb-grua-tel">${g.tel}</div>
-      </div>
-    </a>`).join('');
-}
-
-// TEMA
-let curTema=localStorage.getItem('rutasv_tema')||'system';
-function applyTema(t){
-  const dark=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);
-  document.documentElement.setAttribute('data-theme',dark?'dark':'');
-  // Actualizar mapa si ya existe
-  if(map){
-    const tileUrl=dark
-      ?'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      :'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    map.eachLayer(l=>{if(l._url)map.removeLayer(l);});
-    L.tileLayer(tileUrl,{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
-  }
-  // Highlight botón activo
-  ['claro','oscuro','sistema'].forEach(id=>{
-    const el=$('tema-'+id);if(el)el.classList.remove('on');
-  });
-  const map2={'light':'claro','dark':'oscuro','system':'sistema'};
-  const el=$('tema-'+map2[t]);if(el)el.classList.add('on');
-}
-window.setTema=t=>{
-  curTema=t;
-  localStorage.setItem('rutasv_tema',t);
-  applyTema(t);
-};
-// Escuchar cambio del sistema
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{
-  if(curTema==='system')applyTema('system');
-});
-applyTema(curTema);
+// TIPOS
 const TIPOS={
   llanteria:{label:'Llantería',emoji:'🔧',color:'#e8192c'},
   gasolinera:{label:'Gasolinera',emoji:'⛽',color:'#f59e0b'},
@@ -456,11 +381,7 @@ let map,allNegocios=[],allMarkers=[],curCat='all',myLatLng=null,myMarker=null;
 // INIT MAPA
 function initMap(){
   map=L.map('map',{zoomControl:false}).setView([13.6929,-89.2182],13);
-  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-  const tileUrl=isDark
-    ?'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-    :'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  L.tileLayer(tileUrl,{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
   L.control.zoom({position:'topright'}).addTo(map);
   loadNegocios();
   goToMyLocation();
@@ -616,6 +537,43 @@ window.registrarNegocio=async()=>{
     // Limpiar
     ['rn-nombre','rn-tel','rn-dir','rn-horario','rn-owner','rn-email','rn-lat','rn-lng'].forEach(id=>{const el=$(id);if(el)el.value='';});
   }catch(e){toast('Error al enviar: '+e.message,'err');load(false);}
+};
+
+// DRAWER
+function renderGruasPanelDrawer(){
+  const panel=document.getElementById('grua-panel-drawer');
+  if(!panel)return;
+  panel.innerHTML=`
+    <div style="background:var(--redbg);border:1px solid var(--redborder);border-radius:10px;padding:10px 12px;margin:4px 0 8px;display:flex;align-items:center;gap:8px">
+      <span style="font-size:18px">🚨</span>
+      <div style="font-size:11px;color:var(--red);font-weight:700;line-height:1.4">¿Emergencia en carretera?<br>Llamá directo al servicio más cercano</div>
+    </div>
+  `+GRUAS.map(g=>`
+    <div class="grua-panel-card">
+      <div class="gpc-ic" style="background:${g.color}22">${g.tel==='911'?'🚨':'🚛'}</div>
+      <div class="gpc-info">
+        <div class="gpc-name">${g.name}</div>
+        <div class="gpc-sub">${g.sub}</div>
+        <div class="gpc-tel">${g.tel}</div>
+      </div>
+      <a href="tel:${g.tel}" class="gpc-call">Llamar</a>
+    </div>`).join('');
+}
+
+let drawerGruaOpen=false;
+window.openDrawer=()=>{
+  document.getElementById('drawer').classList.add('on');
+  document.getElementById('drawer-ov').classList.add('on');
+  renderGruasPanelDrawer();
+};
+window.closeDrawer=()=>{
+  document.getElementById('drawer').classList.remove('on');
+  document.getElementById('drawer-ov').classList.remove('on');
+};
+window.toggleGruaPanel=()=>{
+  drawerGruaOpen=!drawerGruaOpen;
+  document.getElementById('grua-panel-drawer').classList.toggle('on',drawerGruaOpen);
+  document.getElementById('grua-arrow').textContent=drawerGruaOpen?'˅':'›';
 };
 
 initMap();
