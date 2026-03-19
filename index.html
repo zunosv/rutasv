@@ -237,7 +237,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       <span id="tb-username">—</span>
     </div>
   </div>
-  <div class="cats">
+  <div class="cats" id="cats-container">
     <div class="cat on" onclick="setcat('all',this)"><span class="cat-ic">🌟</span>Todos</div>
     <div class="cat" onclick="setcat('llanteria',this)"><span class="cat-ic">🔧</span>Llanterías</div>
     <div class="cat" onclick="setcat('gasolinera',this)"><span class="cat-ic">⛽</span>Gasolineras</div>
@@ -371,6 +371,12 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       <div class="drawer-item-info"><div class="drawer-item-name">Registrar negocio</div><div class="drawer-item-sub">Aparece en el mapa gratis</div></div>
       <span class="drawer-item-arrow">›</span>
     </div>
+    <div style="height:1px;background:var(--border);margin:8px 0"></div>
+    <a href="https://wa.me/50369567050?text=Hola%2C%20quisiera%20más%20información%20sobre%20Ruta%20SV" target="_blank" class="drawer-item" style="text-decoration:none" onclick="closeDrawer()">
+      <div class="drawer-item-ic" style="background:#e7fbe6">💬</div>
+      <div class="drawer-item-info"><div class="drawer-item-name">Contacto</div><div class="drawer-item-sub">Escríbenos por WhatsApp</div></div>
+      <span class="drawer-item-arrow">›</span>
+    </a>
   </div>
   <button class="drawer-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
 </div>
@@ -467,19 +473,53 @@ function entrarApp(){
 // AUTO LOGIN
 try{const s=localStorage.getItem('rutasv_ses');if(s){sesion=JSON.parse(s);entrarApp();}}catch{localStorage.removeItem('rutasv_ses');}
 
-// TIPOS
-const TIPOS={
+// TIPOS — base fija + dinámicos desde Firebase
+const TIPOS_DEFAULT={
   llanteria:{label:'Llantería',emoji:'🔧',color:'#e8192c'},
   gasolinera:{label:'Gasolinera',emoji:'⛽',color:'#f59e0b'},
   taller:{label:'Taller Mecánico',emoji:'🔩',color:'#2563eb'},
   lavado:{label:'Lavado',emoji:'🚿',color:'#00a86b'},
 };
-const GRUAS=[
+let TIPOS={...TIPOS_DEFAULT};
+
+async function loadCategorias(){
+  try{
+    const snap=await getDocs(collection(db,'rutasv_categorias'));
+    if(!snap.empty){
+      snap.docs.forEach(d=>{
+        const c=d.data();
+        TIPOS[c.key]={label:c.label,emoji:c.emoji,color:c.color};
+      });
+    }
+  }catch{}
+  renderCats();
+}
+
+function renderCats(){
+  const cats=$('cats-container');
+  if(!cats)return;
+  cats.innerHTML=`<div class="cat on" onclick="setcat('all',this)"><span class="cat-ic">🌟</span>Todos</div>`
+    +Object.entries(TIPOS).map(([k,t])=>`<div class="cat" onclick="setcat('${k}',this)"><span class="cat-ic">${t.emoji}</span>${t.label}</div>`).join('');
+  // Actualizar también el select del formulario de registro
+  const sel=$('rn-tipo');
+  if(sel) sel.innerHTML=Object.entries(TIPOS).map(([k,t])=>`<option value="${k}">${t.emoji} ${t.label}</option>`).join('');
+}
+const GRUAS_DEFAULT=[
   {name:'Grúas El Salvador 24/7',tel:'+50322261234',sub:'Servicio nacional · 24 horas',color:'#e8192c'},
   {name:'Asistencia Vial SV',tel:'+50378901234',sub:'San Salvador y alrededores',color:'#2563eb'},
   {name:'Grúas Rápidas SV',tel:'+50361231234',sub:'Occidente y Oriente',color:'#059669'},
   {name:'911 Emergencias',tel:'911',sub:'Policía Nacional Civil',color:'#7c3aed'},
 ];
+let GRUAS=[...GRUAS_DEFAULT];
+
+async function loadGruas(){
+  try{
+    const snap=await getDocs(collection(db,'rutasv_gruas'));
+    if(!snap.empty){
+      GRUAS=snap.docs.map(d=>({name:d.data().nombre,tel:d.data().tel,sub:d.data().sub,color:d.data().color}));
+    }
+  }catch{GRUAS=GRUAS_DEFAULT;}
+}
 const DEMO=[
   {id:'d1',nombre:'Llantería La Rueda',tipo:'llanteria',lat:13.6929,lng:-89.2182,tel:'7111-2222',horario:'Lun-Sáb 7am-6pm',dir:'Col. Escalón, San Salvador',activo:true},
   {id:'d2',nombre:'Texaco Escalón',tipo:'gasolinera',lat:13.6945,lng:-89.2301,tel:'2222-3333',horario:'24 horas',dir:'Blvd. del Hipódromo',activo:true},
@@ -503,6 +543,8 @@ function initMap(){
   map=L.map('map',{zoomControl:false}).setView([13.6929,-89.2182],13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
   L.control.zoom({position:'topright'}).addTo(map);
+  loadCategorias();
+  loadGruas();
   loadNegocios();
   goToMyLocation();
 }
