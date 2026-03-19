@@ -18,14 +18,32 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
+/* AUTH */
+#s-auth{position:fixed;inset:0;z-index:9000;background:linear-gradient(160deg,#fff5f5 0%,#f5f5f7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;max-width:430px;margin:0 auto}
+.auth-logo{width:64px;height:64px;border-radius:18px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 8px 24px rgba(232,25,44,.3);margin-bottom:16px}
+.auth-title{font-size:26px;font-weight:800;color:var(--text);margin-bottom:4px}
+.auth-sub{font-size:13px;color:var(--text3);font-weight:600;margin-bottom:32px}
+.auth-card{width:100%;background:#fff;border:1px solid var(--border);border-radius:20px;padding:24px;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.auth-tabs{display:flex;background:var(--s2);border-radius:12px;padding:3px;margin-bottom:20px}
+.auth-tab{flex:1;padding:8px;border:none;border-radius:10px;background:transparent;font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;transition:all .15s}
+.auth-tab.on{background:#fff;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.auth-field{margin-bottom:12px}
+.auth-field label{display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.auth-field input{width:100%;padding:12px 14px;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans';font-size:14px;outline:none;transition:all .15s}
+.auth-field input:focus{border-color:var(--red);background:#fff}
+.auth-field input::placeholder{color:var(--text3)}
+.auth-hint{font-size:11px;color:var(--text3);margin-top:4px}
+.auth-btn{width:100%;padding:14px;border:none;border-radius:12px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(232,25,44,.25);margin-top:4px;transition:all .12s}
+.auth-btn:active{transform:scale(.97)}
+
 /* TOPBAR */
 .topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;z-index:1000;box-shadow:0 2px 12px rgba(0,0,0,.06);flex-shrink:0}
 .tb-brand{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .tb-ic{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(232,25,44,.3);flex-shrink:0}
 .tb-name{font-size:20px;font-weight:800;color:var(--text)}
 .tb-sub{font-size:11px;color:var(--text3);font-weight:600;margin-left:2px}
-.tb-reg{margin-left:auto;padding:7px 12px;border:none;border-radius:9px;background:var(--redbg);border:1px solid var(--redborder);color:var(--red);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation}
-.tb-reg:active{transform:scale(.95)}
+.tb-user{margin-left:auto;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;background:var(--s2);border:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;touch-action:manipulation}
+.tb-user-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
 
 /* CATEGORÍAS */
 .cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
@@ -35,17 +53,16 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .cat.on{background:var(--red);border-color:var(--red);color:#fff}
 .cat-ic{font-size:16px}
 
-/* MAPA */
 #map{flex:1;z-index:1}
 
-/* BUSCADOR FLOTANTE */
+/* BUSCADOR */
 .search-float{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:1000}
 .search-bar{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:0 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.12)}
 .search-bar input{flex:1;padding:13px 0;background:transparent;border:none;color:var(--text);font-family:'Plus Jakarta Sans';font-size:14px;outline:none}
 .search-bar input::placeholder{color:var(--text3)}
 .search-ic{font-size:18px;flex-shrink:0}
 
-/* BTN MI UBICACIÓN */
+/* BTN UBICACIÓN */
 .btn-loc{position:absolute;bottom:16px;right:16px;z-index:1000;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.12);touch-action:manipulation}
 .btn-loc:active{transform:scale(.92)}
 
@@ -57,7 +74,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .bn-bar{width:20px;height:3px;border-radius:2px;background:var(--red);opacity:0;transition:opacity .12s;margin-top:1px}
 .bn.on .bn-bar{opacity:1}
 
-/* SHEET NEGOCIO */
+/* SHEET */
 .sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:#fff;border-radius:20px 20px 0 0;z-index:2000;transition:transform .3s cubic-bezier(.34,1.1,.64,1);box-shadow:0 -8px 40px rgba(0,0,0,.15);display:flex;flex-direction:column}
 .sheet.open{transform:translateX(-50%) translateY(0)}
 .sheet-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 16px;flex-shrink:0}
@@ -76,11 +93,16 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .sh-btn.secondary{background:var(--s2);border:1px solid var(--border);color:var(--text)}
 .sh-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--s2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2)}
 
+/* BADGE VISITA */
+.visit-badge{display:none;align-items:center;gap:6px;padding:9px 12px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:12px;line-height:1.4}
+.visit-badge.ok{background:var(--greenbg);border:1px solid var(--greenborder);color:var(--green);display:flex}
+.visit-badge.far{background:var(--goldbg);border:1px solid var(--goldborder);color:var(--gold);display:flex}
+
 /* OVERLAY */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:1500;display:none}
 .overlay.on{display:block}
 
-/* MODAL REGISTRO */
+/* MODALES */
 .mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);z-index:3000;align-items:flex-end;justify-content:center}
 .mov.open{display:flex}
 .modal{background:#fff;border-radius:22px 22px 0 0;padding:20px 20px 50px;width:100%;max-width:430px;animation:mUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto}
@@ -90,13 +112,13 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .modal p{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.field input,.field select,.field textarea{width:100%;padding:12px 14px;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans';font-size:13px;outline:none;transition:all .15s;-webkit-appearance:none}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);background:#fff}
-.field input::placeholder,.field textarea::placeholder{color:var(--text3)}
+.field input,.field select{width:100%;padding:12px 14px;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans';font-size:13px;outline:none;transition:all .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--red);background:#fff}
+.field input::placeholder{color:var(--text3)}
 .field select option{background:#fff}
 .btn-submit{width:100%;padding:14px;border:none;border-radius:12px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s;box-shadow:0 4px 16px rgba(232,25,44,.25);margin-top:4px}
 .btn-submit:active{transform:scale(.97)}
-.btn-cancel{width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;background:transparent;color:var(--text2);font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;transition:all .12s}
+.btn-cancel{width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;background:transparent;color:var(--text2);font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;cursor:pointer;margin-top:8px}
 .btn-cancel:active{transform:scale(.97)}
 
 /* TOAST */
@@ -113,7 +135,6 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-chip p{font-size:13px;font-weight:600;color:var(--text2)}
 
-/* CUSTOM MARKERS */
 .marker-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;border:3px solid #fff;box-shadow:0 3px 12px rgba(0,0,0,.25);cursor:pointer}
 
 /* SCREEN GRUA */
@@ -123,19 +144,18 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .back-btn{width:36px;height:36px;border-radius:10px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;touch-action:manipulation}
 .back-btn:active{transform:scale(.92)}
 .grua-content{padding:18px}
-.grua-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);cursor:pointer;touch-action:manipulation;transition:all .12s}
-.grua-card:active{transform:scale(.98)}
+.grua-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .grua-ic{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
 .grua-info{flex:1}
 .grua-name{font-size:14px;font-weight:800;color:var(--text)}
 .grua-sub{font-size:12px;color:var(--text3);margin-top:2px}
 .grua-tel{font-size:13px;font-weight:700;color:var(--red);margin-top:4px}
-.grua-call{padding:10px 16px;border:none;border-radius:10px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;touch-action:manipulation}
+.grua-call{padding:10px 16px;border:none;border-radius:10px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;text-decoration:none}
 .grua-call:active{transform:scale(.94)}
 .emergency-ban{background:var(--redbg);border:1.5px solid var(--redborder);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
 .eb-txt{flex:1;font-size:13px;color:var(--red);font-weight:700;line-height:1.5}
 
-/* HAMBURGER BTN */
+/* HAMBURGER */
 .tb-hamburger{width:36px;height:36px;border-radius:10px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;touch-action:manipulation;transition:all .12s}
 .tb-hamburger:active{transform:scale(.92)}
 .tb-hamburger svg{width:18px;height:18px;stroke:var(--text);stroke-width:2;fill:none;stroke-linecap:round}
@@ -143,11 +163,15 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 /* DRAWER */
 .drawer-ov{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:2500;display:none;backdrop-filter:blur(2px)}
 .drawer-ov.on{display:block}
-.drawer{position:fixed;top:0;left:0;height:100%;width:260px;background:#fff;z-index:2600;transform:translateX(-100%);transition:transform .28s cubic-bezier(.34,1.05,.64,1);box-shadow:8px 0 40px rgba(0,0,0,.15);display:flex;flex-direction:column}
+.drawer{position:fixed;top:0;left:0;height:100%;width:270px;background:#fff;z-index:2600;transform:translateX(-100%);transition:transform .28s cubic-bezier(.34,1.05,.64,1);box-shadow:8px 0 40px rgba(0,0,0,.15);display:flex;flex-direction:column}
 .drawer.on{transform:translateX(0)}
 .drawer-head{padding:20px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .drawer-title{font-size:16px;font-weight:800;color:var(--text)}
-.drawer-close{width:32px;height:32px;border-radius:50%;background:var(--s2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2);flex-shrink:0}
+.drawer-close{width:32px;height:32px;border-radius:50%;background:var(--s2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--text2)}
+.drawer-user{padding:14px 18px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.drawer-user-av{width:38px;height:38px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;flex-shrink:0}
+.drawer-user-name{font-size:13px;font-weight:800;color:var(--text)}
+.drawer-user-email{font-size:11px;color:var(--text3);margin-top:2px}
 .drawer-body{padding:12px 10px;flex:1;overflow-y:auto}
 .drawer-item{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:12px;cursor:pointer;transition:background .12s;touch-action:manipulation}
 .drawer-item:active{transform:scale(.97)}
@@ -157,48 +181,72 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .drawer-item-name{font-size:14px;font-weight:700;color:var(--text)}
 .drawer-item-sub{font-size:11px;color:var(--text3);margin-top:1px}
 .drawer-item-arrow{font-size:14px;color:var(--text3)}
+.drawer-logout{margin:8px 10px 12px;padding:11px;border:1.5px solid var(--redborder);border-radius:12px;background:var(--redbg);color:var(--red);font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;cursor:pointer;width:calc(100% - 20px);text-align:center}
 
-/* GRÚAS PANEL (dropdown dentro del drawer) */
+/* GRÚAS PANEL DRAWER */
 .grua-panel{display:none;margin-top:2px}
 .grua-panel.on{display:block}
-.grua-panel-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px;margin:4px 0;display:flex;align-items:center;gap:10px;cursor:pointer;touch-action:manipulation;transition:all .12s}
-.grua-panel-card:active{transform:scale(.97)}
+.grua-panel-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px;margin:4px 0;display:flex;align-items:center;gap:10px}
 .gpc-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .gpc-info{flex:1;min-width:0}
 .gpc-name{font-size:12px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gpc-sub{font-size:10px;color:var(--text3);margin-top:1px}
 .gpc-tel{font-size:11px;font-weight:700;color:var(--red);margin-top:2px}
-.gpc-call{padding:7px 10px;border:none;border-radius:8px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;touch-action:manipulation;text-decoration:none}
-.gpc-call:active{transform:scale(.93)}
+.gpc-call{padding:7px 10px;border:none;border-radius:8px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;text-decoration:none}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="tb-brand">
-    <div class="tb-hamburger" onclick="openDrawer()" title="Menú">
-      <svg viewBox="0 0 18 14"><line x1="0" y1="2" x2="18" y2="2"/><line x1="0" y1="7" x2="18" y2="7"/><line x1="0" y1="12" x2="18" y2="12"/></svg>
+<!-- ── PANTALLA AUTH ── -->
+<div id="s-auth">
+  <div class="auth-logo">🛣️</div>
+  <div class="auth-title">Ruta SV</div>
+  <div class="auth-sub">Servicios para tu vehículo en El Salvador</div>
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="auth-tab on" onclick="authTab('login',this)">Ingresar</button>
+      <button class="auth-tab" onclick="authTab('registro',this)">Crear cuenta</button>
     </div>
-    <div class="tb-ic">🛣️</div>
-    <div>
-      <div class="tb-name">Ruta SV</div>
-      <div class="tb-sub">Servicios para tu vehículo</div>
+    <div id="auth-login">
+      <div class="auth-field"><label>Usuario</label><input type="text" id="lg-user" placeholder="tu_usuario" autocomplete="username"></div>
+      <div class="auth-field"><label>Contraseña</label><input type="password" id="lg-pass" placeholder="••••••" maxlength="6" inputmode="numeric"></div>
+      <button class="auth-btn" onclick="doLogin()">Ingresar →</button>
+      <a href="https://wa.me/50369567050?text=Hola%2C%20olvidé%20mi%20contraseña" target="_blank" style="display:block;text-align:center;margin-top:14px;font-size:12px;font-weight:700;color:var(--text3);text-decoration:none">¿Olvidaste tu contraseña? <span style="color:#25d366">Escríbenos por WhatsApp</span></a>
     </div>
-  </div>
-  <div class="cats">
-    <div class="cat on" data-t="all" onclick="setcat('all',this)"><span class="cat-ic">🌟</span>Todos</div>
-    <div class="cat" data-t="llanteria" onclick="setcat('llanteria',this)"><span class="cat-ic">🔧</span>Llanterías</div>
-    <div class="cat" data-t="gasolinera" onclick="setcat('gasolinera',this)"><span class="cat-ic">⛽</span>Gasolineras</div>
-    <div class="cat" data-t="taller" onclick="setcat('taller',this)"><span class="cat-ic">🔩</span>Talleres</div>
-    <div class="cat" data-t="lavado" onclick="setcat('lavado',this)"><span class="cat-ic">🚿</span>Lavados</div>
+    <div id="auth-registro" style="display:none">
+      <div class="auth-field"><label>Usuario</label><input type="text" id="rg-user" placeholder="tu_usuario" autocomplete="username"><div class="auth-hint">Solo letras, números y _</div></div>
+      <div class="auth-field"><label>Correo</label><input type="email" id="rg-email" placeholder="correo@gmail.com"></div>
+      <div class="auth-field"><label>Contraseña (6 dígitos)</label><input type="password" id="rg-pass" placeholder="••••••" maxlength="6" inputmode="numeric"><div class="auth-hint">Solo números, exactamente 6</div></div>
+      <button class="auth-btn" onclick="doRegistro()">Crear cuenta →</button>
+    </div>
   </div>
 </div>
 
-<!-- MAPA / SCREENS -->
-<div style="position:relative;flex:1;display:flex;flex-direction:column">
+<!-- ── APP ── -->
+<div id="s-app" style="display:none;flex-direction:column;height:100vh;overflow:hidden">
 
-  <!-- MAPA -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-hamburger" onclick="openDrawer()">
+      <svg viewBox="0 0 18 14"><line x1="0" y1="2" x2="18" y2="2"/><line x1="0" y1="7" x2="18" y2="7"/><line x1="0" y1="12" x2="18" y2="12"/></svg>
+    </div>
+    <div class="tb-ic">🛣️</div>
+    <div><div class="tb-name">Ruta SV</div><div class="tb-sub">Servicios para tu vehículo</div></div>
+    <div class="tb-user" onclick="openDrawer()">
+      <div class="tb-user-dot"></div>
+      <span id="tb-username">—</span>
+    </div>
+  </div>
+  <div class="cats">
+    <div class="cat on" onclick="setcat('all',this)"><span class="cat-ic">🌟</span>Todos</div>
+    <div class="cat" onclick="setcat('llanteria',this)"><span class="cat-ic">🔧</span>Llanterías</div>
+    <div class="cat" onclick="setcat('gasolinera',this)"><span class="cat-ic">⛽</span>Gasolineras</div>
+    <div class="cat" onclick="setcat('taller',this)"><span class="cat-ic">🔩</span>Talleres</div>
+    <div class="cat" onclick="setcat('lavado',this)"><span class="cat-ic">🚿</span>Lavados</div>
+  </div>
+</div>
+
+<div style="position:relative;flex:1;display:flex;flex-direction:column;overflow:hidden">
   <div id="scr-mapa" class="scr on">
     <div id="map"></div>
     <div class="search-float">
@@ -207,33 +255,27 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
         <input type="text" id="search-input" placeholder="Buscar llantería, taller..." oninput="filterMarkers()">
       </div>
     </div>
-    <div class="btn-loc" onclick="goToMyLocation()" title="Mi ubicación">📍</div>
+    <div class="btn-loc" onclick="goToMyLocation()">📍</div>
   </div>
 
-  <!-- GRÚAS -->
   <div id="scr-grua" class="scr">
     <div class="grua-hdr">
       <div class="back-btn" onclick="showScreen('mapa')">←</div>
       <div>
-        <div style="font-size:16px;font-weight:800;color:var(--text)">🚛 Grúas y Asistencia</div>
+        <div style="font-size:16px;font-weight:800">🚛 Grúas y Asistencia</div>
         <div style="font-size:11px;color:var(--text3);margin-top:1px">Servicio en carretera El Salvador</div>
       </div>
     </div>
     <div class="grua-content">
-      <div class="emergency-ban">
-        <span style="font-size:24px">🚨</span>
-        <div class="eb-txt">¿Emergencia en carretera?<br>Llamá directo al servicio más cercano</div>
-      </div>
+      <div class="emergency-ban"><span style="font-size:24px">🚨</span><div class="eb-txt">¿Emergencia en carretera?<br>Llamá directo al servicio más cercano</div></div>
       <div id="grua-list"></div>
     </div>
   </div>
 
-  <!-- OVERLAY -->
   <div class="overlay" id="overlay" onclick="closeSheet()"></div>
-
 </div>
 
-<!-- SHEET DETALLE NEGOCIO (fuera del contenedor, fixed) -->
+<!-- SHEET NEGOCIO -->
 <div class="sheet" id="sheet">
   <button class="sh-close" onclick="closeSheet()">✕</button>
   <div class="sheet-pill"></div>
@@ -246,27 +288,29 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
         <div class="sh-dist" id="sh-dist"></div>
       </div>
     </div>
+    <div class="visit-badge" id="visit-badge"></div>
     <div id="sh-extra" style="margin-bottom:14px"></div>
   </div>
   <div class="sheet-footer">
     <div class="sh-btns">
-      <a id="sh-tel-btn" class="sh-btn primary" href="#">📞 Llamar</a>
+      <a id="sh-tel-btn" class="sh-btn primary" href="#" onclick="registrarLlamada()">📞 Llamar</a>
       <a id="sh-maps-btn" class="sh-btn secondary" href="#" target="_blank">🗺️ Cómo llegar</a>
     </div>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
 <div class="bnav">
   <div class="bn on" id="bn-mapa" onclick="showScreen('mapa')"><div class="bn-ic">🗺️</div><span>Mapa</span><div class="bn-bar"></div></div>
 </div>
+
+</div><!-- /s-app -->
 
 <!-- MODAL REGISTRO NEGOCIO -->
 <div class="mov" id="m-reg">
   <div class="modal">
     <div class="m-pill"></div>
     <h3>Registrá tu negocio</h3>
-    <p>Aparece en el mapa gratis. Lo revisamos y lo publicamos en menos de 24h.</p>
+    <p>Aparece en el mapa gratis. Lo revisamos y publicamos en menos de 24h.</p>
     <div class="field"><label>Nombre del negocio</label><input type="text" id="rn-nombre" placeholder="Ej: Llantería El Rápido"></div>
     <div class="field"><label>Tipo</label>
       <select id="rn-tipo">
@@ -291,7 +335,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Buscá tu negocio en Google Maps, tocá el pin y copiá las coordenadas.</p>
     </div>
     <div class="field"><label>Nombre del propietario</label><input type="text" id="rn-owner" placeholder="Tu nombre"></div>
-    <div class="field"><label>Correo de contacto</label><input type="email" id="rn-email" placeholder="tucorreo@gmail.com"></div>
+    <div class="field"><label>Correo de contacto</label><input type="email" id="rn-email2" placeholder="tucorreo@gmail.com"></div>
     <button class="btn-submit" onclick="registrarNegocio()">Enviar para revisión →</button>
     <button class="btn-cancel" onclick="closeM('m-reg')">Cancelar</button>
   </div>
@@ -300,46 +344,42 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 <div class="load-ov" id="loading"><div class="load-chip"><div class="spinner"></div><p id="ltxt">Cargando...</p></div></div>
 <div class="toast" id="toast"></div>
 
-<!-- DRAWER OVERLAY -->
+<!-- DRAWER -->
 <div class="drawer-ov" id="drawer-ov" onclick="closeDrawer()"></div>
-
-<!-- DRAWER MENÚ -->
 <div class="drawer" id="drawer">
   <div class="drawer-head">
     <div class="drawer-title">Menú</div>
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
+  <div class="drawer-user">
+    <div class="drawer-user-av" id="drawer-av">?</div>
+    <div>
+      <div class="drawer-user-name" id="drawer-uname">—</div>
+      <div class="drawer-user-email" id="drawer-uemail">—</div>
+    </div>
+  </div>
   <div class="drawer-body">
-    <!-- ITEM GRÚAS -->
     <div class="drawer-item" onclick="toggleGruaPanel()">
       <div class="drawer-item-ic" style="background:var(--redbg)">🚛</div>
-      <div class="drawer-item-info">
-        <div class="drawer-item-name">Grúas y Asistencia</div>
-        <div class="drawer-item-sub">Servicio en carretera 24/7</div>
-      </div>
+      <div class="drawer-item-info"><div class="drawer-item-name">Grúas y Asistencia</div><div class="drawer-item-sub">Servicio en carretera 24/7</div></div>
       <span class="drawer-item-arrow" id="grua-arrow">›</span>
     </div>
-    <!-- PANEL GRÚAS DESPLEGABLE -->
     <div class="grua-panel" id="grua-panel-drawer"></div>
-
     <div style="height:1px;background:var(--border);margin:8px 0"></div>
-
-    <!-- ITEM REGISTRAR NEGOCIO -->
     <div class="drawer-item" onclick="closeDrawer();openM('m-reg')">
       <div class="drawer-item-ic" style="background:var(--greenbg)">➕</div>
-      <div class="drawer-item-info">
-        <div class="drawer-item-name">Registrar negocio</div>
-        <div class="drawer-item-sub">Aparece en el mapa gratis</div>
-      </div>
+      <div class="drawer-item-info"><div class="drawer-item-name">Registrar negocio</div><div class="drawer-item-sub">Aparece en el mapa gratis</div></div>
       <span class="drawer-item-arrow">›</span>
     </div>
   </div>
+  <button class="drawer-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import{getFirestore,collection,addDoc,getDocs,query,where}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
 const app=initializeApp({apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",authDomain:"zuno-1285e.firebaseapp.com",projectId:"zuno-1285e",storageBucket:"zuno-1285e.firebasestorage.app",messagingSenderId:"234427184784",appId:"1:234427184784:web:1bdb29f6f2a1f4e85b4a15"});
 const db=getFirestore(app);
 
@@ -350,6 +390,83 @@ window.openM=id=>$(id).classList.add('open');
 window.closeM=id=>$(id).classList.remove('open');
 document.querySelectorAll('.mov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')}));
 
+// ── SESIÓN ──
+let sesion=null;
+let sheetNegocio=null;
+const VISIT_RADIUS_M=15;
+
+function hashPin(pin){let h=0;for(let i=0;i<pin.length;i++){h=(Math.imul(31,h)+pin.charCodeAt(i))|0;}return h.toString(36)+'_'+pin.length;}
+
+// ── AUTH TABS ──
+window.authTab=(tab,el)=>{
+  document.querySelectorAll('.auth-tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  $('auth-login').style.display=tab==='login'?'':'none';
+  $('auth-registro').style.display=tab==='registro'?'':'none';
+};
+
+// ── LOGIN ──
+window.doLogin=async()=>{
+  const usuario=$('lg-user').value.trim().toLowerCase();
+  const pass=$('lg-pass').value.trim();
+  if(!usuario||!pass){toast('Completá los campos','err');return;}
+  if(pass.length!==6||!/^\d+$/.test(pass)){toast('Contraseña: 6 dígitos numéricos','err');return;}
+  load(true,'Verificando...');
+  try{
+    const snap=await getDocs(query(collection(db,'rutasv_usuarios'),where('usuario','==',usuario)));
+    if(snap.empty){toast('Usuario no encontrado','err');load(false);return;}
+    const udata=snap.docs[0].data();
+    if(udata.passHash!==hashPin(pass)){toast('Contraseña incorrecta','err');load(false);return;}
+    sesion={usuario:udata.usuario,correo:udata.correo,id:snap.docs[0].id};
+    localStorage.setItem('rutasv_ses',JSON.stringify(sesion));
+    entrarApp();
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
+};
+
+// ── REGISTRO ──
+window.doRegistro=async()=>{
+  const usuario=$('rg-user').value.trim().toLowerCase();
+  const correo=$('rg-email').value.trim();
+  const pass=$('rg-pass').value.trim();
+  if(!usuario||!correo||!pass){toast('Completá todos los campos','err');return;}
+  if(!/^[a-z0-9_]+$/.test(usuario)){toast('Usuario: solo letras, números y _','err');return;}
+  if(pass.length!==6||!/^\d+$/.test(pass)){toast('Contraseña: exactamente 6 dígitos','err');return;}
+  load(true,'Creando cuenta...');
+  try{
+    const snap=await getDocs(query(collection(db,'rutasv_usuarios'),where('usuario','==',usuario)));
+    if(!snap.empty){toast('Ese usuario ya existe','err');load(false);return;}
+    const ref=await addDoc(collection(db,'rutasv_usuarios'),{usuario,correo,passHash:hashPin(pass),creadoAt:Date.now()});
+    sesion={usuario,correo,id:ref.id};
+    localStorage.setItem('rutasv_ses',JSON.stringify(sesion));
+    entrarApp();
+    toast('✅ Bienvenido a Ruta SV!','ok');
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
+};
+
+// ── LOGOUT ──
+window.doLogout=()=>{
+  sesion=null;localStorage.removeItem('rutasv_ses');
+  closeDrawer();
+  $('s-app').style.display='none';
+  $('s-auth').style.display='flex';
+};
+
+// ── ENTRAR APP ──
+function entrarApp(){
+  $('s-auth').style.display='none';
+  $('s-app').style.display='flex';
+  $('tb-username').textContent=sesion.usuario;
+  $('drawer-uname').textContent=sesion.usuario;
+  $('drawer-uemail').textContent=sesion.correo;
+  $('drawer-av').textContent=sesion.usuario.charAt(0).toUpperCase();
+  if(!map)initMap();
+}
+
+// AUTO LOGIN
+try{const s=localStorage.getItem('rutasv_ses');if(s){sesion=JSON.parse(s);entrarApp();}}catch{localStorage.removeItem('rutasv_ses');}
+
 // TIPOS
 const TIPOS={
   llanteria:{label:'Llantería',emoji:'🔧',color:'#e8192c'},
@@ -357,16 +474,12 @@ const TIPOS={
   taller:{label:'Taller Mecánico',emoji:'🔩',color:'#2563eb'},
   lavado:{label:'Lavado',emoji:'🚿',color:'#00a86b'},
 };
-
-// GRÚAS predeterminadas
 const GRUAS=[
   {name:'Grúas El Salvador 24/7',tel:'+50322261234',sub:'Servicio nacional · 24 horas',color:'#e8192c'},
   {name:'Asistencia Vial SV',tel:'+50378901234',sub:'San Salvador y alrededores',color:'#2563eb'},
   {name:'Grúas Rápidas SV',tel:'+50361231234',sub:'Occidente y Oriente',color:'#059669'},
   {name:'911 Emergencias',tel:'911',sub:'Policía Nacional Civil',color:'#7c3aed'},
 ];
-
-// DEMO negocios (se reemplazan con Firebase)
 const DEMO=[
   {id:'d1',nombre:'Llantería La Rueda',tipo:'llanteria',lat:13.6929,lng:-89.2182,tel:'7111-2222',horario:'Lun-Sáb 7am-6pm',dir:'Col. Escalón, San Salvador',activo:true},
   {id:'d2',nombre:'Texaco Escalón',tipo:'gasolinera',lat:13.6945,lng:-89.2301,tel:'2222-3333',horario:'24 horas',dir:'Blvd. del Hipódromo',activo:true},
@@ -378,7 +491,14 @@ const DEMO=[
 
 let map,allNegocios=[],allMarkers=[],curCat='all',myLatLng=null,myMarker=null;
 
-// INIT MAPA
+// DISTANCIA EN METROS
+function distM(lat1,lng1,lat2,lng2){
+  const R=6371000,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function distTxt(m){return m<1000?Math.round(m)+'m':(m/1000).toFixed(1)+'km';}
+
 function initMap(){
   map=L.map('map',{zoomControl:false}).setView([13.6929,-89.2182],13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
@@ -390,88 +510,115 @@ function initMap(){
 async function loadNegocios(){
   try{
     const snap=await getDocs(query(collection(db,'rutasv_negocios'),where('activo','==',true)));
-    const firebase=snap.docs.map(d=>({id:d.id,...d.data()}));
-    allNegocios=[...DEMO,...firebase];
+    allNegocios=[...DEMO,...snap.docs.map(d=>({id:d.id,...d.data()}))];
   }catch{allNegocios=DEMO;}
   renderMarkers();
 }
 
 function renderMarkers(){
-  allMarkers.forEach(m=>map.removeLayer(m));
-  allMarkers=[];
+  allMarkers.forEach(m=>map.removeLayer(m));allMarkers=[];
   const q=($('search-input')?.value||'').toLowerCase();
-  const list=allNegocios.filter(n=>{
+  allNegocios.filter(n=>{
     if(!n.activo)return false;
     if(curCat!=='all'&&n.tipo!==curCat)return false;
     if(q&&!n.nombre.toLowerCase().includes(q)&&!n.dir?.toLowerCase().includes(q))return false;
     return true;
-  });
-  list.forEach(n=>{
+  }).forEach(n=>{
     const t=TIPOS[n.tipo]||TIPOS.taller;
-    const icon=L.divIcon({
-      html:`<div class="marker-icon" style="background:${t.color}">${t.emoji}</div>`,
-      className:'',iconSize:[38,38],iconAnchor:[19,19]
-    });
+    const icon=L.divIcon({html:`<div class="marker-icon" style="background:${t.color}">${t.emoji}</div>`,className:'',iconSize:[38,38],iconAnchor:[19,19]});
     const m=L.marker([n.lat,n.lng],{icon}).addTo(map);
     m.on('click',()=>openSheet(n));
     allMarkers.push(m);
   });
 }
 
+// ── OPEN SHEET ──
 function openSheet(n){
+  sheetNegocio=n;
   const t=TIPOS[n.tipo]||TIPOS.taller;
   $('sh-logo').textContent=t.emoji;
   $('sh-logo').style.background=t.color+'22';
   $('sh-name').textContent=n.nombre;
   $('sh-tipo').textContent=t.label+(n.horario?' · '+n.horario:'');
-  // Distancia
-  if(myLatLng){
-    const d=getDistance(myLatLng.lat,myLatLng.lng,n.lat,n.lng);
-    $('sh-dist').textContent='📍 '+d;
-  }else $('sh-dist').textContent='';
-  // Extra info
   $('sh-extra').innerHTML=n.dir?`<div style="font-size:12px;color:var(--text3);padding:10px 12px;background:var(--s2);border-radius:10px">📌 ${n.dir}</div>`:'';
-  // Botones
-  const telBtn=$('sh-tel-btn');
-  if(n.tel){telBtn.href='tel:'+n.tel.replace(/[^0-9+]/g,'');telBtn.style.display='';}
-  else telBtn.style.display='none';
+  const tel=$('sh-tel-btn');
+  if(n.tel){tel.href='tel:'+n.tel.replace(/[^0-9+]/g,'');tel.style.display='';}
+  else tel.style.display='none';
   $('sh-maps-btn').href=`https://www.google.com/maps?q=${n.lat},${n.lng}`;
+
+  // Badge visita
+  const badge=$('visit-badge');
+  badge.className='visit-badge';
+  badge.textContent='';
+
+  if(myLatLng){
+    const d=distM(myLatLng.lat,myLatLng.lng,n.lat,n.lng);
+    $('sh-dist').textContent='📍 '+distTxt(d);
+    if(d<=VISIT_RADIUS_M){
+      badge.innerHTML='✅ Visita confirmada — estás en el lugar';
+      badge.classList.add('ok');
+      registrarVisita(n,myLatLng.lat,myLatLng.lng,d);
+    }else{
+      badge.innerHTML=`📡 Estás a ${distTxt(d)} del negocio`;
+      badge.classList.add('far');
+    }
+  }else{
+    $('sh-dist').textContent='';
+  }
+
   $('sheet').classList.add('open');
   $('overlay').classList.add('on');
   map.panTo([n.lat,n.lng]);
 }
 
-window.closeSheet=()=>{$('sheet').classList.remove('open');$('overlay').classList.remove('on');};
-
-function getDistance(lat1,lng1,lat2,lng2){
-  const R=6371;const dLat=(lat2-lat1)*Math.PI/180;const dLng=(lng2-lng1)*Math.PI/180;
-  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
-  const km=R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-  return km<1?Math.round(km*1000)+'m':km.toFixed(1)+'km';
+// ── REGISTRAR VISITA ──
+async function registrarVisita(n,uLat,uLng,dMetros){
+  if(!sesion)return;
+  try{
+    await addDoc(collection(db,'rutasv_visitas'),{
+      negocioId:n.id, negocioNombre:n.nombre, negocioTipo:n.tipo,
+      usuario:sesion.usuario, usuarioId:sesion.id,
+      userLat:uLat, userLng:uLng, distanciaM:Math.round(dMetros),
+      fecha:new Date().toISOString().slice(0,10),
+      hora:new Date().toLocaleTimeString('es-SV',{hour:'2-digit',minute:'2-digit'}),
+      ts:Date.now()
+    });
+  }catch(e){console.warn('Visita:',e.message);}
 }
 
+// ── REGISTRAR LLAMADA ──
+window.registrarLlamada=async()=>{
+  if(!sesion||!sheetNegocio)return;
+  try{
+    await addDoc(collection(db,'rutasv_llamadas'),{
+      negocioId:sheetNegocio.id, negocioNombre:sheetNegocio.nombre, negocioTipo:sheetNegocio.tipo,
+      usuario:sesion.usuario, usuarioId:sesion.id,
+      fecha:new Date().toISOString().slice(0,10),
+      hora:new Date().toLocaleTimeString('es-SV',{hour:'2-digit',minute:'2-digit'}),
+      ts:Date.now()
+    });
+  }catch(e){console.warn('Llamada:',e.message);}
+};
+
+window.closeSheet=()=>{$('sheet').classList.remove('open');$('overlay').classList.remove('on');sheetNegocio=null;};
+
 window.goToMyLocation=()=>{
-  if(!navigator.geolocation){toast('GPS no disponible en este dispositivo','err');return;}
+  if(!navigator.geolocation){toast('GPS no disponible','err');return;}
   const btn=document.querySelector('.btn-loc');
   if(btn)btn.textContent='⌛';
-  toast('Obteniendo ubicación...');
   navigator.geolocation.getCurrentPosition(
     pos=>{
       myLatLng={lat:pos.coords.latitude,lng:pos.coords.longitude};
       if(myMarker)map.removeLayer(myMarker);
-      const myIcon=L.divIcon({
-        html:`<div style="width:18px;height:18px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 2px 8px rgba(37,99,235,.5)"></div>`,
-        className:'',iconSize:[18,18],iconAnchor:[9,9]
-      });
-      myMarker=L.marker([myLatLng.lat,myLatLng.lng],{icon:myIcon}).addTo(map);
+      const ic=L.divIcon({html:`<div style="width:18px;height:18px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 2px 8px rgba(37,99,235,.5)"></div>`,className:'',iconSize:[18,18],iconAnchor:[9,9]});
+      myMarker=L.marker([myLatLng.lat,myLatLng.lng],{icon:ic}).addTo(map);
       map.setView([myLatLng.lat,myLatLng.lng],15);
       if(btn)btn.textContent='📍';
       toast('✅ Ubicación encontrada','ok');
     },
     err=>{
       if(btn)btn.textContent='📍';
-      if(err.code===1)toast('Permiso de ubicación denegado — habilitalo en configuración','err');
-      else if(err.code===2)toast('GPS no disponible ahora','err');
+      if(err.code===1)toast('Permiso de ubicación denegado','err');
       else toast('No se pudo obtener ubicación','err');
       map.setView([13.6929,-89.2182],13);
     },
@@ -482,43 +629,27 @@ window.goToMyLocation=()=>{
 window.setcat=(t,el)=>{curCat=t;document.querySelectorAll('.cat').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderMarkers();};
 window.filterMarkers=()=>renderMarkers();
 
-// GRÚAS
 function renderGruas(){
   $('grua-list').innerHTML=GRUAS.map(g=>`
     <div class="grua-card">
       <div class="grua-ic" style="background:${g.color}22">${g.tel==='911'?'🚨':'🚛'}</div>
-      <div class="grua-info">
-        <div class="grua-name">${g.name}</div>
-        <div class="grua-sub">${g.sub}</div>
-        <div class="grua-tel">${g.tel}</div>
-      </div>
+      <div class="grua-info"><div class="grua-name">${g.name}</div><div class="grua-sub">${g.sub}</div><div class="grua-tel">${g.tel}</div></div>
       <a href="tel:${g.tel}" class="grua-call">Llamar</a>
     </div>`).join('');
 }
 
-// PANTALLAS
 window.showScreen=scr=>{
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
   $('scr-'+scr).classList.add('on');
-  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('on'));
-  $('bn-'+scr)?.classList.add('on');
   if(scr==='grua')renderGruas();
 };
 
-// MODO UBICACIÓN
-$('rn-loc-modo').addEventListener('change',function(){
-  $('rn-coords-wrap').style.display=this.value==='manual'?'':'none';
-});
+$('rn-loc-modo').addEventListener('change',function(){$('rn-coords-wrap').style.display=this.value==='manual'?'':'none';});
 
-// REGISTRO
 window.registrarNegocio=async()=>{
-  const nombre=$('rn-nombre').value.trim();
-  const tipo=$('rn-tipo').value;
-  const tel=$('rn-tel').value.trim();
-  const dir=$('rn-dir').value.trim();
-  const horario=$('rn-horario').value.trim();
-  const owner=$('rn-owner').value.trim();
-  const email=$('rn-email').value.trim();
+  const nombre=$('rn-nombre').value.trim(),tipo=$('rn-tipo').value,tel=$('rn-tel').value.trim();
+  const dir=$('rn-dir').value.trim(),horario=$('rn-horario').value.trim();
+  const owner=$('rn-owner').value.trim(),email=$('rn-email2').value.trim();
   const modo=$('rn-loc-modo').value;
   if(!nombre||!tel||!dir||!owner){toast('Completá los campos requeridos','err');return;}
   load(true,'Enviando...');
@@ -527,56 +658,28 @@ window.registrarNegocio=async()=>{
     if(modo==='gps'){
       const pos=await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,{timeout:8000}));
       lat=pos.coords.latitude;lng=pos.coords.longitude;
-    } else {
+    }else{
       lat=parseFloat($('rn-lat').value);lng=parseFloat($('rn-lng').value);
       if(!lat||!lng){toast('Ingresá coordenadas válidas','err');load(false);return;}
     }
     await addDoc(collection(db,'rutasv_negocios'),{nombre,tipo,tel,dir,horario,owner,email,lat,lng,activo:false,createdAt:Date.now()});
-    closeM('m-reg');load(false);
+    closeM('m-reg');
     toast('✅ Enviado — revisamos en menos de 24h','ok');
-    // Limpiar
-    ['rn-nombre','rn-tel','rn-dir','rn-horario','rn-owner','rn-email','rn-lat','rn-lng'].forEach(id=>{const el=$(id);if(el)el.value='';});
-  }catch(e){toast('Error al enviar: '+e.message,'err');load(false);}
+    ['rn-nombre','rn-tel','rn-dir','rn-horario','rn-owner','rn-email2','rn-lat','rn-lng'].forEach(id=>{const el=$(id);if(el)el.value='';});
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
 };
 
 // DRAWER
 function renderGruasPanelDrawer(){
-  const panel=document.getElementById('grua-panel-drawer');
-  if(!panel)return;
-  panel.innerHTML=`
-    <div style="background:var(--redbg);border:1px solid var(--redborder);border-radius:10px;padding:10px 12px;margin:4px 0 8px;display:flex;align-items:center;gap:8px">
-      <span style="font-size:18px">🚨</span>
-      <div style="font-size:11px;color:var(--red);font-weight:700;line-height:1.4">¿Emergencia en carretera?<br>Llamá directo al servicio más cercano</div>
-    </div>
-  `+GRUAS.map(g=>`
-    <div class="grua-panel-card">
-      <div class="gpc-ic" style="background:${g.color}22">${g.tel==='911'?'🚨':'🚛'}</div>
-      <div class="gpc-info">
-        <div class="gpc-name">${g.name}</div>
-        <div class="gpc-sub">${g.sub}</div>
-        <div class="gpc-tel">${g.tel}</div>
-      </div>
-      <a href="tel:${g.tel}" class="gpc-call">Llamar</a>
-    </div>`).join('');
+  const p=document.getElementById('grua-panel-drawer');if(!p)return;
+  p.innerHTML=`<div style="background:var(--redbg);border:1px solid var(--redborder);border-radius:10px;padding:10px 12px;margin:4px 0 8px;display:flex;align-items:center;gap:8px"><span style="font-size:18px">🚨</span><div style="font-size:11px;color:var(--red);font-weight:700;line-height:1.4">¿Emergencia?<br>Llamá al servicio más cercano</div></div>`
+  +GRUAS.map(g=>`<div class="grua-panel-card"><div class="gpc-ic" style="background:${g.color}22">${g.tel==='911'?'🚨':'🚛'}</div><div class="gpc-info"><div class="gpc-name">${g.name}</div><div class="gpc-sub">${g.sub}</div><div class="gpc-tel">${g.tel}</div></div><a href="tel:${g.tel}" class="gpc-call">Llamar</a></div>`).join('');
 }
-
 let drawerGruaOpen=false;
-window.openDrawer=()=>{
-  document.getElementById('drawer').classList.add('on');
-  document.getElementById('drawer-ov').classList.add('on');
-  renderGruasPanelDrawer();
-};
-window.closeDrawer=()=>{
-  document.getElementById('drawer').classList.remove('on');
-  document.getElementById('drawer-ov').classList.remove('on');
-};
-window.toggleGruaPanel=()=>{
-  drawerGruaOpen=!drawerGruaOpen;
-  document.getElementById('grua-panel-drawer').classList.toggle('on',drawerGruaOpen);
-  document.getElementById('grua-arrow').textContent=drawerGruaOpen?'˅':'›';
-};
-
-initMap();
+window.openDrawer=()=>{document.getElementById('drawer').classList.add('on');document.getElementById('drawer-ov').classList.add('on');renderGruasPanelDrawer();};
+window.closeDrawer=()=>{document.getElementById('drawer').classList.remove('on');document.getElementById('drawer-ov').classList.remove('on');};
+window.toggleGruaPanel=()=>{drawerGruaOpen=!drawerGruaOpen;document.getElementById('grua-panel-drawer').classList.toggle('on',drawerGruaOpen);document.getElementById('grua-arrow').textContent=drawerGruaOpen?'˅':'›';};
 </script>
 </body>
 </html>

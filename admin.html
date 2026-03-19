@@ -146,6 +146,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
     <button class="tab on" onclick="setTab('pendientes',this)">⏳ Pendientes</button>
     <button class="tab" onclick="setTab('activos',this)">✅ Activos</button>
     <button class="tab" onclick="setTab('stats',this)">📊 Stats</button>
+    <button class="tab" onclick="setTab('usuarios',this)">👥 Usuarios</button>
     <button class="tab" onclick="setTab('mapa',this)">🗺️ Agregar</button>
   </div>
   <div class="content" id="content"></div>
@@ -216,6 +217,22 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 
 <div class="load-ov" id="loading"><div class="load-chip"><div class="spinner"></div><p id="ltxt">Cargando...</p></div></div>
 <div class="toast" id="toast"></div>
+
+<!-- MODAL RESET CONTRASEÑA -->
+<div class="mov" id="m-reset">
+  <div class="modal">
+    <div class="m-pill"></div>
+    <h3>🔑 Resetear contraseña</h3>
+    <p id="reset-info">—</p>
+    <div class="field">
+      <label>Nueva contraseña (6 dígitos)</label>
+      <input type="text" id="reset-pass" placeholder="123456" maxlength="6" inputmode="numeric">
+    </div>
+    <input type="hidden" id="reset-uid">
+    <button class="btn-submit" style="background:var(--blue);box-shadow:0 4px 16px rgba(37,99,235,.25)" onclick="confirmarReset()">🔑 Asignar contraseña</button>
+    <button class="btn-cancel" onclick="closeM('m-reset')">Cancelar</button>
+  </div>
+</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
@@ -335,11 +352,80 @@ function renderStats(pend,act){
       <div class="kpi"><div class="kpi-v">${porTipo('taller')}</div><div class="kpi-l">🔩 Talleres</div></div>
       <div class="kpi"><div class="kpi-v">${porTipo('lavado')}</div><div class="kpi-l">🚿 Lavados</div></div>
     </div>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.04);text-align:center">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.04);text-align:center;margin-bottom:16px">
       <div style="font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Total en base de datos</div>
       <div style="font-size:44px;font-weight:800;color:var(--red)">${total}</div>
       <div style="font-size:12px;color:var(--text3);margin-top:4px">negocios registrados</div>
-    </div>`;
+    </div>
+    <div id="stats-visitas"><div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">⌛ Cargando estadísticas...</div></div>`;
+  loadStatsVisitas();
+}
+
+async function loadStatsVisitas(){
+  try{
+    // Visitas
+    const vSnap=await getDocs(collection(db,'rutasv_visitas'));
+    const visitas=vSnap.docs.map(d=>d.data());
+    // Llamadas
+    const lSnap=await getDocs(collection(db,'rutasv_llamadas'));
+    const llamadas=lSnap.docs.map(d=>d.data());
+
+    // Agrupar visitas por negocio
+    const vPorNeg={};
+    visitas.forEach(v=>{
+      const k=v.negocioNombre||v.negocioId;
+      vPorNeg[k]=(vPorNeg[k]||0)+1;
+    });
+    // Agrupar llamadas por negocio
+    const lPorNeg={};
+    llamadas.forEach(l=>{
+      const k=l.negocioNombre||l.negocioId;
+      lPorNeg[k]=(lPorNeg[k]||0)+1;
+    });
+
+    // Usuarios únicos
+    const usuariosV=new Set(visitas.map(v=>v.usuario)).size;
+    const usuariosL=new Set(llamadas.map(l=>l.usuario)).size;
+
+    const topV=Object.entries(vPorNeg).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const topL=Object.entries(lPorNeg).sort((a,b)=>b[1]-a[1]).slice(0,5);
+
+    const el=document.getElementById('stats-visitas');
+    if(!el)return;
+    el.innerHTML=`
+      <div class="kgrid" style="margin-bottom:16px">
+        <div class="kpi"><div class="kpi-v" style="color:var(--blue)">${visitas.length}</div><div class="kpi-l">📍 Visitas totales</div></div>
+        <div class="kpi"><div class="kpi-v" style="color:var(--green)">${llamadas.length}</div><div class="kpi-l">📞 Llamadas totales</div></div>
+        <div class="kpi"><div class="kpi-v">${usuariosV}</div><div class="kpi-l">👥 Usuarios que visitaron</div></div>
+        <div class="kpi"><div class="kpi-v">${usuariosL}</div><div class="kpi-l">📱 Usuarios que llamaron</div></div>
+      </div>
+
+      ${topV.length?`
+      <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
+        <div style="font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">📍 Visitas por negocio</div>
+        ${topV.map(([nombre,cnt])=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+            <div style="flex:1;font-size:13px;font-weight:700;color:var(--text)">${nombre}</div>
+            <div style="padding:3px 10px;border-radius:20px;background:var(--bluebg);border:1px solid var(--blueborder);color:var(--blue);font-size:12px;font-weight:800">${cnt}</div>
+          </div>`).join('')}
+      </div>`:''}
+
+      ${topL.length?`
+      <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
+        <div style="font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">📞 Llamadas por negocio</div>
+        ${topL.map(([nombre,cnt])=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+            <div style="flex:1;font-size:13px;font-weight:700;color:var(--text)">${nombre}</div>
+            <div style="padding:3px 10px;border-radius:20px;background:var(--greenbg);border:1px solid var(--greenborder);color:var(--green);font-size:12px;font-weight:800">${cnt}</div>
+          </div>`).join('')}
+      </div>`:''}
+
+      ${!visitas.length&&!llamadas.length?'<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">📊 Aún no hay datos de visitas ni llamadas</div>':''}
+    `;
+  }catch(e){
+    const el=document.getElementById('stats-visitas');
+    if(el)el.innerHTML=`<div style="text-align:center;padding:20px;color:var(--red);font-size:13px">Error cargando estadísticas: ${e.message}</div>`;
+  }
 }
 
 // APROBAR
@@ -417,8 +503,87 @@ window.setTab=(t,el)=>{
   } else {
     mapWrap.classList.remove('on');
     cerrarPinPopup();
-    render();
+    if(t==='usuarios') renderUsuarios();
+    else render();
   }
+};
+
+// ── USUARIOS ──
+let allUsuarios=[];
+
+async function renderUsuarios(){
+  $('content').innerHTML=`<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px">⌛ Cargando usuarios...</div>`;
+  try{
+    const snap=await getDocs(collection(db,'rutasv_usuarios'));
+    allUsuarios=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){
+    $('content').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red);font-size:13px">Error: ${e.message}</div>`;
+    return;
+  }
+
+  if(!allUsuarios.length){
+    $('content').innerHTML=`<div class="empty">👥 No hay usuarios registrados aún</div>`;
+    return;
+  }
+
+  $('content').innerHTML=`
+    <div style="margin-bottom:14px">
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:0 14px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+        <span style="font-size:16px">🔍</span>
+        <input type="text" id="usr-search" placeholder="Buscar por usuario o correo..." oninput="filtrarUsuarios()"
+          style="flex:1;padding:11px 0;border:none;background:transparent;font-family:'Plus Jakarta Sans';font-size:13px;color:var(--text);outline:none">
+      </div>
+    </div>
+    <div id="usr-list"></div>`;
+  pintarUsuarios(allUsuarios);
+}
+
+function pintarUsuarios(lista){
+  const el=document.getElementById('usr-list');
+  if(!el)return;
+  el.innerHTML=lista.map(u=>{
+    const fecha=u.creadoAt?new Date(u.creadoAt).toLocaleDateString('es-SV',{day:'2-digit',month:'short',year:'numeric'}):'—';
+    const inicial=u.usuario?u.usuario.charAt(0).toUpperCase():'?';
+    return `<div class="neg-card" style="display:flex;align-items:center;gap:12px">
+      <div style="width:42px;height:42px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;flex-shrink:0">${inicial}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:800;color:var(--text)">@${u.usuario}</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.correo||'—'}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">📅 ${fecha}</div>
+      </div>
+      <button onclick="abrirReset('${u.id}','${u.usuario}')" style="padding:8px 12px;border:1px solid var(--blueborder);border-radius:10px;background:var(--bluebg);color:var(--blue);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap">🔑 Reset</button>
+    </div>`;
+  }).join('') || `<div class="empty">No se encontraron usuarios</div>`;
+}
+
+window.filtrarUsuarios=()=>{
+  const q=document.getElementById('usr-search')?.value.toLowerCase()||'';
+  const filtrados=allUsuarios.filter(u=>
+    u.usuario?.toLowerCase().includes(q)||u.correo?.toLowerCase().includes(q)
+  );
+  pintarUsuarios(filtrados);
+};
+
+window.abrirReset=(uid,usuario)=>{
+  $('reset-uid').value=uid;
+  $('reset-info').textContent=`Asignale una nueva contraseña al usuario @${usuario}. Deberá usarla para ingresar.`;
+  $('reset-pass').value='';
+  openM('m-reset');
+};
+
+window.confirmarReset=async()=>{
+  const uid=$('reset-uid').value;
+  const pass=$('reset-pass').value.trim();
+  if(pass.length!==6||!/^\d+$/.test(pass)){toast('Ingresá exactamente 6 dígitos numéricos','err');return;}
+  // Mismo hash que usa el index.html
+  function hashPin(pin){let h=0;for(let i=0;i<pin.length;i++){h=(Math.imul(31,h)+pin.charCodeAt(i))|0;}return h.toString(36)+'_'+pin.length;}
+  load(true,'Reseteando...');
+  try{
+    await updateDoc(doc(db,'rutasv_usuarios',uid),{passHash:hashPin(pass),resetAt:Date.now()});
+    closeM('m-reset');
+    toast('✅ Contraseña reseteada correctamente','ok');
+  }catch(e){toast('Error: '+e.message,'err');}
+  load(false);
 };
 
 // MAPA ADMIN
